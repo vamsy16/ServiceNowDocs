@@ -1,0 +1,116 @@
+#!/usr/bin/env python3
+"""Assemble the site: copy downloadable artefacts next to the HTML and write index.html."""
+import os
+import shutil
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
+ART = os.path.join(ROOT, "artifacts")
+SITE = os.path.join(ROOT, "site")
+
+FILES = [
+    ("ServiceNow-Impact-Australia-Executive-Briefing.pptx",
+     "Executive briefing — PowerPoint",
+     "31 editable slides at 13.33×7.5 in, with full speaker notes on every slide."),
+    ("ServiceNow-Impact-Australia-Executive-Briefing.pdf",
+     "Executive briefing — PDF (with notes)",
+     "Landscape deck PDF: slide pages followed by a speaker-notes page for each slide. Bookmarked."),
+    ("ServiceNow-Impact-Australia-Client-Brief.pdf",
+     "Client brief — PDF (A4)",
+     "Print-ready 39-page written brief: architecture, feature catalogue, prerequisites, activation steps and appendices."),
+]
+
+for name, _t, _d in FILES:
+    src = os.path.join(ART, name)
+    if os.path.exists(src):
+        shutil.copy2(src, os.path.join(SITE, name))
+
+cards = "\n".join(
+    '<a class="card" href="{f}"><div class="k">{t}</div><div class="d">{d}</div>'
+    '<div class="dl">Download ↓</div></a>'.format(f=n, t=t, d=d)
+    for n, t, d in FILES)
+
+index = """<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ServiceNow Impact — Deliverables (Australia release)</title>
+<style>
+:root{{--navy:#03213f;--blue:#1f4e79;--green:#03754d;--grey:#f2f4f7;--rule:#d9e2ec;--mid:#5c6b7a;}}
+*{{box-sizing:border-box}}
+body{{margin:0;font-family:"Segoe UI",Roboto,-apple-system,Arial,sans-serif;color:var(--navy);
+  background:var(--grey)}}
+header{{background:var(--navy);color:#fff;padding:40px 26px 34px}}
+header .wrap{{max-width:1050px;margin:0 auto}}
+h1{{margin:0 0 8px;font-size:1.9rem}}
+header p{{color:#8fb0cc;margin:0;font-size:.95rem}}
+header .tag{{display:inline-block;background:var(--green);border-radius:20px;padding:3px 12px;
+  font-size:.72rem;font-weight:700;letter-spacing:.05em;margin-bottom:14px}}
+main{{max-width:1050px;margin:0 auto;padding:26px 26px 70px}}
+h2{{font-size:1.05rem;margin:26px 0 12px;color:var(--blue)}}
+.grid{{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}}
+.card{{display:block;background:#fff;border:1px solid var(--rule);border-radius:9px;padding:18px;
+  text-decoration:none;color:inherit;transition:.15s}}
+.card:hover{{border-color:var(--green);box-shadow:0 6px 20px rgba(3,33,63,.10);transform:translateY(-2px)}}
+.card .k{{font-weight:700;color:var(--navy);margin-bottom:6px}}
+.card .d{{font-size:.85rem;color:#41546a;line-height:1.5}}
+.card .dl{{margin-top:12px;color:var(--green);font-weight:700;font-size:.82rem}}
+.big{{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:6px}}
+.big a{{background:var(--blue);color:#fff;border-radius:9px;padding:22px;text-decoration:none}}
+.big a.g{{background:var(--green)}}
+.big .t{{font-size:1.15rem;font-weight:700;margin-bottom:6px}}
+.big .s{{font-size:.86rem;opacity:.92;line-height:1.5}}
+@media(max-width:760px){{.big{{grid-template-columns:1fr}}}}
+</style></head>
+<body>
+<header><div class="wrap">
+  <div class="tag">AUSTRALIA RELEASE</div>
+  <h1>ServiceNow Impact — client deliverables</h1>
+  <p>Executive briefing deck, written client brief and the source markdown — built from the official
+     ServiceNow Australia-release Impact documentation (266 topics).</p>
+</div></header>
+<main>
+  <h2>Read in your browser</h2>
+  <div class="big">
+    <a href="deck.html"><div class="t">▸ Executive briefing — slide deck</div>
+      <div class="s">31 slides with a speaker-notes panel. Use ← → to move, <b>N</b> for notes,
+      <b>G</b> for an overview grid, or Print to save as PDF.</div></a>
+    <a class="g" href="brief.html"><div class="t">▸ Client brief — written document</div>
+      <div class="s">39-page A4 brief: architecture, feature catalogue, twelve client scenarios,
+      prerequisites, activation steps, terminology caveats and appendices.</div></a>
+  </div>
+
+  <h2>Download</h2>
+  <div class="grid">%s</div>
+
+  <h2>Source</h2>
+  <div class="grid">
+    <a class="card" href="ServiceNow-Impact-Australia-Client-Brief.md" download>
+      <div class="k">Client brief — Markdown</div>
+      <div class="d">The editable source for everything above (~16,600 words).</div>
+      <div class="dl">Download ↓</div></a>
+    <a class="card" href="https://github.com/vamsy16/ServiceNowDocs/tree/australia/markdown/impact">
+      <div class="k">Source documentation</div>
+      <div class="d">The official Australia-release Impact topics this material was built from.</div>
+      <div class="dl">Open the docs folder →</div></a>
+  </div>
+
+  <h2>How this was produced</h2>
+  <div class="grid">
+    <div class="card"><div class="k">Grounded in the docs</div>
+      <div class="d">Every capability, navigation path and entitlement statement traces to a named
+      topic in the Australia-release Impact documentation (listed in Appendix E of the brief).
+      Nothing is inferred from marketing material, and entitlement-dependent figures are marked
+      <b>verify</b>.</div></div>
+    <div class="card"><div class="k">One model, three outputs</div>
+      <div class="d">The deck's 31 slides and speaker notes come from a single content model, rendered
+      to PowerPoint, PDF and this HTML viewer — so the versions cannot drift apart.</div></div>
+  </div>
+</main>
+</body></html>
+""" % cards
+
+with open(os.path.join(SITE, "index.html"), "w", encoding="utf-8") as fh:
+    fh.write(index)
+shutil.copy2(os.path.join(ROOT, "ServiceNow-Impact-Australia-Client-Brief.md"),
+             os.path.join(SITE, "ServiceNow-Impact-Australia-Client-Brief.md"))
+print("site ready:", sorted(os.listdir(SITE)))

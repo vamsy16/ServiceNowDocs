@@ -1,0 +1,2491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ServiceNow Impact — Client Briefing</title>
+<style>
+:root {
+  --navy:#03213f; --blue:#1f4e79; --green:#03754d; --light:#e6f4ee;
+  --grey:#f2f4f7; --mid:#5c6b7a; --rule:#d9e2ec;
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family:"Segoe UI",Roboto,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  color:var(--navy); background:#eef2f6; line-height:1.62; }
+a { color:var(--blue); }
+.layout { display:flex; max-width:1500px; margin:0 auto; align-items:flex-start; }
+nav.toc { position:sticky; top:0; width:330px; flex:0 0 330px; height:100vh; overflow-y:auto;
+  background:#fff; border-right:1px solid var(--rule); padding:20px 16px 60px; }
+nav.toc h2 { font-size:.72rem; letter-spacing:.13em; text-transform:uppercase; color:var(--mid);
+  margin:0 0 10px; }
+nav.toc a { display:block; text-decoration:none; color:var(--blue); padding:3px 6px;
+  border-radius:4px; font-size:.82rem; }
+nav.toc a:hover { background:var(--grey); }
+nav.toc a.toc-l2 { font-weight:700; color:var(--navy); margin-top:9px; font-size:.86rem; }
+nav.toc a.toc-l3 { padding-left:16px; color:var(--mid); }
+nav.toc a.active { background:var(--light); color:var(--green); font-weight:600; }
+main { flex:1; min-width:0; background:#fff; padding:0 0 80px; }
+.wrap { max-width:940px; margin:0 auto; padding:0 34px; }
+header.cover { background:var(--navy); color:#fff; padding:46px 0 34px; }
+header.cover .wrap { max-width:940px; }
+header.cover h1 { font-size:2.1rem; margin:0 0 8px; line-height:1.2; }
+header.cover .sub { color:#7fd8b0; font-weight:600; font-size:1.02rem; margin-bottom:22px; }
+table.meta { width:100%; border-collapse:collapse; font-size:.82rem; background:#fff;
+  border-radius:6px; overflow:hidden; }
+table.meta th { text-align:left; vertical-align:top; width:150px; background:var(--grey);
+  color:var(--navy); padding:8px 10px; border:1px solid var(--rule); font-size:.78rem; }
+table.meta td { vertical-align:top; padding:8px 10px; border:1px solid var(--rule); color:#22364a; }
+.callout { background:var(--grey); border-left:4px solid var(--green); padding:12px 16px;
+  border-radius:0 6px 6px 0; margin:22px 0; font-size:.92rem; }
+.idiagramwrap { }
+h2 { font-size:1.32rem; color:#fff; background:var(--navy); padding:9px 14px; border-radius:6px;
+  margin:38px 0 14px; }
+h3 { font-size:1.09rem; color:var(--blue); margin:26px 0 8px; }
+h4 { font-size:.97rem; color:var(--green); margin:18px 0 6px; }
+p, li { font-size:.93rem; }
+ul, ol { padding-left:24px; }
+li { margin:3px 0; }
+table { width:100%; border-collapse:collapse; margin:16px 0 22px; font-size:.8rem; }
+th { background:var(--blue); color:#fff; text-align:left; padding:7px 9px; border:1px solid #b6c4d2;
+  vertical-align:top; }
+td { padding:7px 9px; border:1px solid #b6c4d2; vertical-align:top; color:#22364a; }
+tbody tr:nth-child(even) td { background:var(--grey); }
+code { background:var(--grey); padding:1px 5px; border-radius:3px;
+  font-family:"DejaVu Sans Mono",Consolas,monospace; font-size:.82em; }
+hr { border:0; border-top:1px solid var(--rule); margin:34px 0; }
+blockquote { margin:20px 0; background:var(--grey); border-left:4px solid var(--green);
+  padding:12px 16px; border-radius:0 6px 6px 0; font-size:.92rem; }
+blockquote p { margin:6px 0; }
+blockquote p:first-child { margin-top:0; }
+blockquote p:last-child { margin-bottom:0; }
+.diagram { margin:22px 0 28px; }
+.diag-row { display:grid; grid-template-columns:1.5fr 1fr 1.45fr 1fr; gap:12px; }
+.diag-col { display:flex; flex-direction:column; }
+.diag-head { color:#fff; font-weight:700; font-size:.82rem; padding:8px 10px;
+  border-radius:6px 6px 0 0; }
+.diag-head.navy { background:var(--navy); }
+.diag-head.green { background:var(--green); }
+.diag-head.blue { background:var(--blue); }
+.diag-body { margin:0; padding:10px 12px 12px 26px; background:var(--light);
+  border:1px solid var(--rule); border-top:0; border-radius:0 0 6px 6px; font-size:.78rem;
+  flex:1; }
+.diag-body li { margin:4px 0; }
+.diag-loop { background:#d9e2ec; color:var(--navy); text-align:center; padding:9px 12px;
+  border-radius:5px; margin-top:12px; font-size:.83rem; }
+.diag-note { text-align:center; color:var(--mid); font-size:.78rem; margin-top:9px; }
+.actions { display:flex; gap:10px; flex-wrap:wrap; margin:6px 0 0; }
+.btn { display:inline-block; padding:9px 15px; border-radius:5px; text-decoration:none;
+  font-size:.85rem; font-weight:600; background:var(--green); color:#fff; border:0; cursor:pointer; }
+.btn.alt { background:#fff; color:var(--navy); border:1px solid var(--rule); }
+@media (max-width:1080px) { nav.toc { display:none; } .diag-row { grid-template-columns:1fr; } }
+@media print {
+  body { background:#fff; }
+  nav.toc, .actions, .noprint { display:none; }
+  .layout { display:block; }
+  main { padding:0; }
+  header.cover { background:#fff; color:var(--navy); padding:0 0 14px; border-bottom:2px solid var(--green); }
+  header.cover .sub { color:var(--green); }
+  table.meta th { background:var(--grey); }
+  h2 { background:var(--navy) !important; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  th, .diag-head, .diag-body, .diag-loop, .callout, tbody tr:nth-child(even) td {
+    -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+  h2, h3 { break-after:avoid; }
+  table, .diagram, .callout { break-inside:avoid; }
+  @page { size:A4; margin:14mm; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+<nav class="toc">
+  <h2>Sections</h2>
+  <a class="toc-l2" href="#1-introduction-to-servicenow-impact">1. Introduction to ServiceNow Impact</a>
+<a class="toc-l3" href="#1-1-what-servicenow-impact-is">1.1 What ServiceNow Impact is</a>
+<a class="toc-l3" href="#1-2-why-servicenow-introduced-it">1.2 Why ServiceNow introduced it</a>
+<a class="toc-l3" href="#1-3-what-business-problems-impact-solves">1.3 What business problems Impact solves</a>
+<a class="toc-l3" href="#1-4-where-impact-fits-in-the-servicenow-platform">1.4 Where Impact fits in the ServiceNow platform</a>
+<a class="toc-l3" href="#1-5-impact-versus-normal-servicenow-administration-and-support">1.5 Impact versus normal ServiceNow administration and support</a>
+<a class="toc-l2" href="#2-servicenow-impact-high-level-architecture">2. ServiceNow Impact — high-level architecture</a>
+<a class="toc-l3" href="#2-1-how-impact-works-conceptually">2.1 How Impact works conceptually</a>
+<a class="toc-l3" href="#2-2-main-components-and-modules">2.2 Main components and modules</a>
+<a class="toc-l3" href="#2-3-how-the-moving-parts-relate">2.3 How the moving parts relate</a>
+<a class="toc-l3" href="#2-4-architecture-and-flow-diagram-slide-ready-description">2.4 Architecture and flow diagram — slide-ready description</a>
+<a class="toc-l2" href="#3-main-features-of-servicenow-impact">3. Main features of ServiceNow Impact</a>
+<a class="toc-l3" href="#3-1-impact-workspace-impact-store-application-home">3.1 Impact workspace (Impact Store Application home)</a>
+<a class="toc-l3" href="#3-2-impact-delivery-instance-and-impact-activity-center">3.2 Impact Delivery Instance and Impact Activity Center</a>
+<a class="toc-l3" href="#3-3-impact-digest-and-curated-resources">3.3 Impact Digest and curated resources</a>
+<a class="toc-l3" href="#3-4-customer-organisation-and-stakeholder-management">3.4 Customer, organisation and stakeholder management</a>
+<a class="toc-l3" href="#3-5-platform-health-health-scanning-at-scale">3.5 Platform Health — health scanning at scale</a>
+<a class="toc-l3" href="#3-6-building-and-managing-scan-definitions">3.6 Building and managing scan definitions</a>
+<a class="toc-l3" href="#3-7-proactive-code-check">3.7 Proactive Code Check</a>
+<a class="toc-l3" href="#3-8-instance-observer-off-instance-observability">3.8 Instance Observer — off-instance observability</a>
+<a class="toc-l3" href="#3-9-value-management-objectives-outcomes-and-value-reports">3.9 Value Management — objectives, outcomes and value reports</a>
+<a class="toc-l3" href="#3-10-product-adoption-roadmaps-and-capability-maps">3.10 Product Adoption Roadmaps and Capability Maps</a>
+<a class="toc-l3" href="#3-11-recommendations">3.11 Recommendations</a>
+<a class="toc-l3" href="#3-12-accelerators-and-initiatives">3.12 Accelerators and Initiatives</a>
+<a class="toc-l3" href="#3-13-impact-squad-the-human-layer">3.13 Impact Squad — the human layer</a>
+<a class="toc-l3" href="#3-14-developer-support">3.14 Developer Support</a>
+<a class="toc-l3" href="#3-15-learning-training-insights-and-coaching">3.15 Learning, training insights and coaching</a>
+<a class="toc-l3" href="#3-16-subscriptions-and-entitlement-visibility">3.16 Subscriptions and entitlement visibility</a>
+<a class="toc-l3" href="#3-17-consumption-reporting-benefits-amp-usage">3.17 Consumption reporting — Benefits &amp;amp; Usage</a>
+<a class="toc-l3" href="#3-18-technical-kpis-and-benchmarking">3.18 Technical KPIs and benchmarking</a>
+<a class="toc-l3" href="#3-19-monthly-health-assessment">3.19 Monthly Health Assessment</a>
+<a class="toc-l3" href="#3-20-impact-operating-model-foundations-and-steady-state">3.20 Impact operating model — Foundations and Steady State</a>
+<a class="toc-l3" href="#3-21-ai-capabilities-now-assist-for-impact-and-servicenow-otto">3.21 AI capabilities — Now Assist for Impact and ServiceNow Otto</a>
+<a class="toc-l3" href="#3-22-integrations-jira-azure-devops-spm-cwm-update-sets-automation">3.22 Integrations — Jira, Azure DevOps, SPM, CWM, update sets, automation</a>
+<a class="toc-l3" href="#3-23-storage-and-platform-capacity">3.23 Storage and platform capacity</a>
+<a class="toc-l3" href="#3-24-security-data-governance-and-domain-separation">3.24 Security, data governance and domain separation</a>
+<a class="toc-l3" href="#3-25-partner-and-managed-service-provider-considerations">3.25 Partner and managed-service-provider considerations</a>
+<a class="toc-l2" href="#4-client-scenarios-twelve-worked-examples">4. Client scenarios — twelve worked examples</a>
+<a class="toc-l3" href="#4-1-the-renewal-conversation-you-cannot-support">4.1 The renewal conversation you cannot support</a>
+<a class="toc-l3" href="#4-2-shelf-ware-paying-for-capability-nobody-uses">4.2 Shelf-ware: paying for capability nobody uses</a>
+<a class="toc-l3" href="#4-3-technical-debt-discovered-too-late">4.3 Technical debt discovered too late</a>
+<a class="toc-l3" href="#4-4-performance-incidents-reported-by-users-not-monitoring">4.4 Performance incidents reported by users, not monitoring</a>
+<a class="toc-l3" href="#4-5-the-new-platform-owner-inherits-an-undocumented-program">4.5 The new platform owner inherits an undocumented program</a>
+<a class="toc-l3" href="#4-6-change-management-is-reactive-not-preventative">4.6 Change management is reactive, not preventative</a>
+<a class="toc-l3" href="#4-7-skills-gap-is-the-real-adoption-blocker">4.7 Skills gap is the real adoption blocker</a>
+<a class="toc-l3" href="#4-8-remediation-work-never-gets-prioritised">4.8 Remediation work never gets prioritised</a>
+<a class="toc-l3" href="#4-9-multiple-business-units-one-platform-competing-priorities">4.9 Multiple business units, one platform, competing priorities</a>
+<a class="toc-l3" href="#4-10-controlled-environment-constrained-feature-set">4.10 Controlled environment, constrained feature set</a>
+<a class="toc-l3" href="#4-11-consumption-and-entitlement-governance">4.11 Consumption and entitlement governance</a>
+<a class="toc-l3" href="#4-12-regulated-onboarding-manual-registration">4.12 Regulated onboarding: manual registration</a>
+<a class="toc-l2" href="#5-business-benefits">5. Business benefits</a>
+<a class="toc-l3" href="#5-1-benefits-by-stakeholder">5.1 Benefits by stakeholder</a>
+<a class="toc-l3" href="#5-2-benefits-by-category">5.2 Benefits by category</a>
+<a class="toc-l3" href="#5-3-benefit-realisation-discipline">5.3 Benefit-realisation discipline</a>
+<a class="toc-l2" href="#6-impact-versus-traditional-support">6. Impact versus traditional support</a>
+<a class="toc-l2" href="#gt-what-impact-does-not-do-it-does-not-remove-the-need-for-platform-ad">&amp;gt; What Impact does not do. It does not remove the need for platform administrators, a change/release process, data governance, or an implementation partner for net-new work. Treat it as the measurement, guidance and expert-capacity layer wrapped around your existing operating model.</a>
+<a class="toc-l2" href="#7-prerequisites">7. Prerequisites</a>
+<a class="toc-l3" href="#7-1-platform-and-release-prerequisites">7.1 Platform and release prerequisites</a>
+<a class="toc-l3" href="#7-2-licensing-and-entitlement-prerequisites">7.2 Licensing and entitlement prerequisites</a>
+<a class="toc-l3" href="#7-3-people-roles-and-accountability-prerequisites">7.3 People, roles and accountability prerequisites</a>
+<a class="toc-l3" href="#7-4-access-consent-and-governance-prerequisites">7.4 Access, consent and governance prerequisites</a>
+<a class="toc-l3" href="#7-5-infrastructure-network-and-security-prerequisites">7.5 Infrastructure, network and security prerequisites</a>
+<a class="toc-l3" href="#7-6-data-and-configuration-prerequisites">7.6 Data and configuration prerequisites</a>
+<a class="toc-l3" href="#7-7-ai-prerequisites-only-if-ai-code-fix-is-in-scope">7.7 AI prerequisites (only if AI code fix is in scope)</a>
+<a class="toc-l3" href="#7-8-customer-and-organisation-setup-prerequisites">7.8 Customer and organisation setup prerequisites</a>
+<a class="toc-l3" href="#7-9-servicenow-support-and-services-prerequisites">7.9 ServiceNow support and services prerequisites</a>
+<a class="toc-l3" href="#7-10-pre-implementation-checklist">7.10 Pre-implementation checklist</a>
+<a class="toc-l2" href="#8-installation-and-activation-the-sequence">8. Installation and activation — the sequence</a>
+<a class="toc-l3" href="#step-1-procure-the-impact-store-application">Step 1 — Procure the Impact Store Application</a>
+<a class="toc-l3" href="#step-2-install-the-application">Step 2 — Install the application</a>
+<a class="toc-l3" href="#step-3-open-guided-setup">Step 3 — Open Guided Setup</a>
+<a class="toc-l3" href="#step-4-onboard-users-to-the-impact-store-application">Step 4 — Onboard users to the Impact Store Application</a>
+<a class="toc-l3" href="#step-5-assign-platform-health-users-and-set-up-development-teams">Step 5 — Assign Platform Health users and set up development teams</a>
+<a class="toc-l3" href="#step-6-activate-scan-engine-and-review-settings">Step 6 — Activate Scan Engine and review settings</a>
+<a class="toc-l3" href="#step-7-configure-scan-engine-properties">Step 7 — Configure Scan Engine properties</a>
+<a class="toc-l3" href="#step-8-optional-configure-ai-code-fix">Step 8 — (Optional) Configure AI code fix</a>
+<a class="toc-l3" href="#step-9-run-the-first-full-scan">Step 9 — Run the first full scan</a>
+<a class="toc-l3" href="#step-10-register-your-instances-in-my-sn-instances">Step 10 — Register your instances in My SN Instances</a>
+<a class="toc-l3" href="#step-11-configure-the-authentication-method">Step 11 — Configure the authentication method</a>
+<a class="toc-l3" href="#step-12-validate-the-instance-connection">Step 12 — Validate the instance connection</a>
+<a class="toc-l3" href="#step-13-automated-registration-to-the-impact-delivery-instance-preferr">Step 13 — Automated registration to the Impact Delivery Instance (preferred)</a>
+<a class="toc-l3" href="#step-14-manual-registration-regulated-gcc-environments">Step 14 — Manual registration (regulated / GCC environments)</a>
+<a class="toc-l3" href="#step-15-verify-the-impact-data-connection">Step 15 — Verify the Impact data connection</a>
+<a class="toc-l3" href="#step-16-initiate-sync-and-data-migration-from-idi">Step 16 — Initiate sync and data migration from IDI</a>
+<a class="toc-l3" href="#step-17-approve-impact-squad-access">Step 17 — Approve Impact Squad access</a>
+<a class="toc-l3" href="#step-18-enable-the-value-and-remaining-capability-layers">Step 18 — Enable the value and remaining capability layers</a>
+<a class="toc-l3" href="#troubleshooting-the-activation-sequence">Troubleshooting the activation sequence</a>
+<a class="toc-l3" href="#verify-before-you-commit-a-caution-list">Verify before you commit — a caution list</a>
+<a class="toc-l2" href="#9-from-activation-to-value-the-first-90-days-and-steady-state">9. From activation to value — the first 90 days and steady state</a>
+<a class="toc-l3" href="#9-1-foundations-phase-roughly-the-first-90-120-days">9.1 Foundations phase (roughly the first 90–120 days)</a>
+<a class="toc-l3" href="#9-2-steady-state-phase-after-foundations">9.2 Steady State phase (after Foundations)</a>
+<a class="toc-l3" href="#9-3-governance-recommendations-for-the-client">9.3 Governance recommendations for the client</a>
+<a class="toc-l2" href="#10-terminology-clarifications-and-accuracy-caveats">10. Terminology clarifications and accuracy caveats</a>
+<a class="toc-l3" href="#10-1-naming-and-terminology">10.1 Naming and terminology</a>
+<a class="toc-l3" href="#10-2-accuracy-caveats-and-entitlement-dependent-statements">10.2 Accuracy caveats and entitlement-dependent statements</a>
+<a class="toc-l3" href="#10-3-statements-to-avoid-in-client-material">10.3 Statements to avoid in client material</a>
+<a class="toc-l2" href="#11-appendices">11. Appendices</a>
+<a class="toc-l3" href="#appendix-a-package-and-entitlement-comparison-as-documented">Appendix A — Package and entitlement comparison (as documented)</a>
+<a class="toc-l3" href="#appendix-b-accelerator-sub-catalog-snapshot">Appendix B — Accelerator sub-catalog snapshot</a>
+<a class="toc-l3" href="#appendix-c-roles-installed-with-impact">Appendix C — Roles installed with Impact</a>
+<a class="toc-l3" href="#appendix-d-dependent-applications-and-data-movement-extract">Appendix D — Dependent applications and data movement (extract)</a>
+<a class="toc-l3" href="#appendix-e-source-topics-australia-release-documentation">Appendix E — Source topics (Australia release documentation)</a>
+</nav>
+<main>
+  <header class="cover">
+    <div class="wrap">
+      <h1>ServiceNow Impact — Client Briefing</h1>
+      <div class="sub">Application overview, business case, architecture, features, prerequisites and activation</div>
+      <table class="meta"><tr><th></th><td></td></tr><tr><th><b>Platform release</b></th><td>ServiceNow <b>Australia</b></td></tr><tr><th><b>Prepared for</b></th><td>Client executive sponsors, IT leadership, ServiceNow platform owner, platform administrators and architects</td></tr><tr><th><b>Document type</b></th><td>Client-ready briefing / pre-read for an Impact enablement workshop</td></tr><tr><th><b>Evidence base</b></th><td>ServiceNow Australia-release product documentation for Impact (266 Impact topics in the Australia docs set), Impact packages and entitlement documentation, ServiceNow Store installation instructions, and cross-release Impact release notes. Source topics are listed in Appendix E.</td></tr><tr><th><b>Verification note</b></th><td>Feature names, entitlements and navigation paths in this document were checked against the Australia-release documentation. Anything marked <b>&quot;verify&quot;</b> is either inconsistent between ServiceNow topics or entitlement-dependent — confirm against your Impact package and the live ServiceNow Store listing before committing to a plan.</td></tr></table>
+      <div class="actions noprint" style="margin-top:16px">
+        <a class="btn" href="ServiceNow-Impact-Australia-Client-Brief.pdf" download>Download PDF (A4)</a>
+        <button class="btn alt" onclick="window.print()">Print this page</button>
+        <a class="btn alt" href="index.html">← All deliverables</a>
+      </div>
+    </div>
+  </header>
+  <div class="wrap">
+    <blockquote class="callout"><b>How to use this document.</b> Sections 1–2 are the executive and architecture narrative. Section 3 is the feature catalogue (one block per capability, structured as what it is → how it works → why it is useful → example → benefit → availability). Section 4 gives twelve worked client scenarios. Sections 5–6 are the business-benefit and comparison material. Sections 7–8 are the administrator and architect implementation sections (prerequisites and exact activation steps). Section 9 covers the first 90 days and the steady-state cadence; Sections 10–11 cover terminology caveats and reference appendices.</blockquote>
+    <h2 id="1-introduction-to-servicenow-impact">1. Introduction to ServiceNow Impact</h2>
+<h3 id="1-1-what-servicenow-impact-is">1.1 What ServiceNow Impact is</h3>
+<p><strong>ServiceNow Impact is a premium, subscription-based customer success product</strong> — not a conventional ServiceNow application. ServiceNow describes it as combining <em>"AI-powered software tools with hands-on expertise that helps organizations maximize the value of their ServiceNow investment."</em></p>
+<p>Practically, Impact is three things delivered together:</p>
+<ol>
+<li><strong>A digital workspace inside your own ServiceNow instance</strong> — the <strong>Impact Store Application</strong>, which is where Impact features are consumed (recommendations, Platform Health, value management, product adoption roadmaps, approvals and access management). ServiceNow states that from the <strong>Yokohama release onward, the Impact Store Application is the exclusive hub for all new innovative Impact features</strong>.</li>
+<li><strong>A ServiceNow-hosted expert collaboration space</strong> — the <strong>Impact Delivery Instance (IDI)</strong>, which hosts your Impact Squad, conversations, activity centre, training insights, value reports and full catalogues that are not yet migrated into your instance.</li>
+<li><strong>Human expertise and service entitlements</strong> — your <strong>Impact Squad</strong> (Customer Success Manager, and for higher packages a Customer Success Executive, Platform Architect and Support Account Manager), <strong>24×7 support with enhanced response targets</strong>, <strong>Developer Support</strong>, <strong>Accelerators and Initiatives</strong>, <strong>learning credits</strong> and <strong>discounts</strong>.</li>
+</ol>
+<p>Impact's stated core functions are to help you: <strong>plan implementation, track product adoption, maintain platform health, resolve platform issues and access expert support.</strong></p>
+<h3 id="1-2-why-servicenow-introduced-it">1.2 Why ServiceNow introduced it</h3>
+<p>ServiceNow's framing is that Impact <em>"personalizes your digital transformation journey and accelerates your time-to-value"</em> by combining proactive guidance, embedded tooling and dedicated expert support.</p>
+<p>The market drivers behind the product:</p>
+<ul>
+<li><strong>The platform outgrew "ticket-based" support.</strong> Customers no longer only ask <em>"something is broken, please fix it"</em>. They ask <em>"are we using what we bought, is our configuration healthy, will our next upgrade be painful, and what should we do next?"</em> Case-based support was never designed to answer those questions.</li>
+<li><strong>Value realisation became a board-level question.</strong> Customers must demonstrate ROI on ServiceNow. Impact provides objectives, measurable outcomes, benchmarks and monetised value reports to answer that question with data rather than anecdote.</li>
+<li><strong>Technical debt accumulated silently.</strong> Thousands of leading-practice checks are now packaged as <strong>HealthScan definitions</strong> and the <strong>Scan Engine</strong>, so quality can be measured continuously instead of being discovered during an upgrade.</li>
+<li><strong>Expert capacity is scarce.</strong> Impact packages expertise into <strong>Accelerators</strong> and <strong>Initiatives</strong> — fixed-scope, expert-led engagements — so advice arrives as delivery, not as a document.</li>
+<li><strong>Upgrade fatigue is real.</strong> Upgrade readiness, Proactive Code Check and Real-Time Prevention attack the causes of broken upgrades before the upgrade window opens.</li>
+</ul>
+<h3 id="1-3-what-business-problems-impact-solves">1.3 What business problems Impact solves</h3>
+<table>
+<thead>
+<tr>
+<th>Client problem</th>
+<th>How Impact addresses it</th>
+<th>Where it lives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>"We cannot prove the value of our ServiceNow investment."</td>
+<td>Objectives → measurable outcomes → success metrics → trend data → monetised Value Reports with visible assumptions</td>
+<td>Value Management, Outcome Insights, Value Reports</td>
+</tr>
+<tr>
+<td>"We bought modules nobody uses."</td>
+<td>Product Adoption Roadmaps, Capability Maps, licence/entitlement visibility, adoption status per product</td>
+<td>Product Adoption, Subscriptions</td>
+</tr>
+<tr>
+<td>"Our instance has hidden technical debt."</td>
+<td>HealthScan definitions, Scan Engine findings, Real-Time Prevention, AI code fixes, Proactive Code Check</td>
+<td>Platform Health</td>
+</tr>
+<tr>
+<td>"We only find problems during an upgrade."</td>
+<td>Upgrade-readiness scanning, update-set scanning, pre-upgrade checks, Proactive Code Check</td>
+<td>Platform Health, Proactive Code Check</td>
+</tr>
+<tr>
+<td>"Performance problems are discovered by users, not by us."</td>
+<td>Instance Observer: off-instance monitoring, performance metrics, alerts, triage, analytics</td>
+<td>Instance Observer</td>
+</tr>
+<tr>
+<td>"We don't know what to do next."</td>
+<td>Recommendation engine, Impact Squad advice, Product Adoption Roadmaps, Accelerators</td>
+<td>Impact overview, IDI</td>
+</tr>
+<tr>
+<td>"Our experts are the bottleneck."</td>
+<td>Developer Support, Accelerators, Initiatives, learning credits, training insights</td>
+<td>Experts &amp; learning</td>
+</tr>
+<tr>
+<td>"We cannot prove we are improving."</td>
+<td>Monthly Health Assessment, health scores by category, technical KPIs with peer comparison</td>
+<td>Platform Health, Tech KPIs</td>
+</tr>
+</tbody>
+</table>
+<h3 id="1-4-where-impact-fits-in-the-servicenow-platform">1.4 Where Impact fits in the ServiceNow platform</h3>
+<p>Impact sits <strong>around and above</strong> the ServiceNow AI Platform. It does not replace your existing processes, your change control, or your Now Support entitlement:</p>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>What it is</th>
+<th>Impact's relationship to it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Your instances</strong></td>
+<td>Production, Test, Development</td>
+<td>Impact Store Application, Scan Engine, data collection jobs and Instance Observer telemetry live here</td>
+</tr>
+<tr>
+<td><strong>Sync layer</strong></td>
+<td>Service Bridge</td>
+<td>Secure, bi-directional synchronisation between your instance and the IDI</td>
+</tr>
+<tr>
+<td><strong>ServiceNow side</strong></td>
+<td>Impact Delivery Instance (IDI)</td>
+<td>Impact Squad workspace, Activity Center, value management, catalogues, training insights</td>
+</tr>
+<tr>
+<td><strong>Now Support</strong></td>
+<td>Standard case handling and incident management</td>
+<td>Unchanged and still used; Impact <strong>adds</strong> enhanced P1/P2 response targets, Developer Support and proactive engagements on top</td>
+</tr>
+<tr>
+<td><strong>AI stack</strong></td>
+<td>Now Assist / ServiceNow Otto</td>
+<td>Provides AI-assisted outcome summaries, consumption-report summarisation, GenAI-assisted root-cause analysis and AI code fixes</td>
+</tr>
+</tbody>
+</table>
+<p>Two structural facts make this work:</p>
+<ul>
+<li><strong>Data flows in both directions.</strong> Findings, scans and health data are produced in your instance; squad-created artefacts (outcomes, Product Adoption Roadmaps, Accelerator requests, conversations, attachments) are migrated/synchronised into your instance so your teams see them where they work.</li>
+<li><strong>Not everything leaves your instance.</strong> Scan Engine findings are explicitly <strong>not transmitted to the Impact Delivery Instance</strong>, and user-experience monitoring and instance scanning both require explicit consent and permission management.</li>
+</ul>
+<h3 id="1-5-impact-versus-normal-servicenow-administration-and-support">1.5 Impact versus normal ServiceNow administration and support</h3>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Normal administration &amp; support</th>
+<th>ServiceNow Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Primary tooling</strong></td>
+<td>Instance UI, Now Support portal, assigned support cases</td>
+<td>Impact Store Application + Impact Delivery Instance: Platform Health, Instance Observer, Value Management, Product Adoption, Activity Center</td>
+</tr>
+<tr>
+<td><strong>Evidence produced</strong></td>
+<td>Case records, known errors, fixes</td>
+<td>HealthScan/Health Assessment reports, tech KPI scores, adoption status, outcome trends, monetised value reports, roadmap artefacts</td>
+</tr>
+<tr>
+<td><strong>Success measure</strong></td>
+<td>SLA adherence and incident closure</td>
+<td>Business outcomes achieved, value realised, platform health trend, adoption and upgrade readiness</td>
+</tr>
+<tr>
+<td><strong>Learning</strong></td>
+<td>Documentation and self-serve training</td>
+<td>Learning credits, on-demand courses, certifications, contextual learning recommendations aligned to your outcomes</td>
+</tr>
+<tr>
+<td><strong>Engineering help</strong></td>
+<td>Break-fix of ServiceNow base functionality</td>
+<td><strong>Developer Support</strong>: named engineers who help troubleshoot your existing customisations (Advanced/Total, or the Managed Support add-on)</td>
+</tr>
+<tr>
+<td><strong>Commercial model</strong></td>
+<td>Included with product support entitlements</td>
+<td>Paid subscription packages (<strong>Guided</strong>, <strong>Total</strong>, <strong>Integrated Success</strong>) with <strong>Add-on SKUs</strong> and an Accelerator consumption model</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Important honesty point for the client:</strong> Impact does <strong>not</strong> replace platform administration. You still need administrators, a change/release process, and your own data governance. Impact supplies the measurement, guidance and expert capacity that make those things faster and safer.</p>
+<p><strong>Availability restriction (Australia relevance):</strong> ServiceNow documents that "portions of Impact may not be available to users in the FedRAMP, NSC DOD IL5, or Australia IRAP-Protected data centers, to self-hosted users, or in other restricted environments, or to managed service providers (except for their internal use)." If any part of the estate is in a restricted environment (including IRAP-Protected), confirm the exact feature subset with your Impact Squad before design sign-off.</p>
+</blockquote>
+<hr />
+<h2 id="2-servicenow-impact-high-level-architecture">2. ServiceNow Impact — high-level architecture</h2>
+<h3 id="2-1-how-impact-works-conceptually">2.1 How Impact works conceptually</h3>
+<p>Think of Impact as a <strong>closed-loop value engine</strong> with four repeating movements:</p>
+<ol>
+<li><strong>Baseline and instrument</strong> — your instance is connected (Service Bridge), users and roles are provisioned, and data collection begins: Scan Engine definitions and findings, Instance Observer telemetry, Performance Analytics value metrics, and entitlement/subscription data.</li>
+<li><strong>Interpret</strong> — ServiceNow turns raw data into meaning: health scores by category, technical KPIs compared to peers, performance anomalies and alerts, adoption status per capability, outcome trend lines against benchmark and goal.</li>
+<li><strong>Recommend and act</strong> — the recommendation engine (rule-based plus AI) and your Impact Squad surface <strong>Recommended next steps</strong>: adopt this capability, run this Accelerator, remediate this finding, take this course, target this outcome. Recommendations can be accepted, hidden, or <strong>converted into work items</strong> in Strategic Portfolio Management (SPM) or Collaborative Work Management (CWM) so platform work is governed like any other delivery work.</li>
+<li><strong>Measure and re-baseline</strong> — outcome performance flows into <strong>Outcome Insights</strong> and ultimately <strong>Value Reports</strong> (monetised), while Accelerator consumption, case trends and health scores feed periodic reviews. The loop then repeats on the <strong>Foundations → Steady State</strong> cadence of the Impact operating model.</li>
+</ol>
+<h3 id="2-2-main-components-and-modules">2.2 Main components and modules</h3>
+<table>
+<thead>
+<tr>
+<th>Layer</th>
+<th>Component</th>
+<th>What it is</th>
+<th>Where it lives</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Customer instance (consumer)</strong></td>
+<td><strong>Impact Store Application</strong></td>
+<td>The Impact application installed on your ServiceNow instance; the primary UI for day-to-day Impact use</td>
+<td>Your instance: <strong>All → Impact</strong></td>
+</tr>
+<tr>
+<td></td>
+<td>Impact Common</td>
+<td>Foundational code and data model for the Impact Store Application</td>
+<td>Installed as a dependent app</td>
+</tr>
+<tr>
+<td></td>
+<td>Impact Content</td>
+<td>Content/templates: Accelerator descriptions, pre-built PAR templates</td>
+<td>Installed as a dependent app</td>
+</tr>
+<tr>
+<td></td>
+<td>Impact Health</td>
+<td>Scan Engine, Real-Time Validation, Analytics Dashboards, Agile integrations, Proposed Fix, Proactive Code Check</td>
+<td>Installed as a dependent app</td>
+</tr>
+<tr>
+<td></td>
+<td>Impact Value Management — <code>&lt;product&gt;</code></td>
+<td>Per-product data collection packs (ITSM, ITOM, CSM, HRSD, IRM, SAM, HAM, APM, App Engine, SecOps, SPM) that feed objectives, outcomes and value reporting</td>
+<td>Installed conditionally; jobs must be enabled</td>
+</tr>
+<tr>
+<td></td>
+<td>Instance Observer</td>
+<td>Off-instance observability: performance, availability, alerts, triage, analytics, user experience</td>
+<td>Off-instance cloud app; entitlement-tiered</td>
+</tr>
+<tr>
+<td></td>
+<td>Now Assist for Impact / ServiceNow Otto skills</td>
+<td>GenAI capabilities (outcome summarisation, consumption-report summarisation, AI code fixes)</td>
+<td>Your instance + Now Assist Admin</td>
+</tr>
+<tr>
+<td><strong>ServiceNow side (provider)</strong></td>
+<td><strong>Impact Delivery Instance (IDI)</strong></td>
+<td>The service provider instance: Impact Squad workspace, Activity Center, Training Insights, Value Reports, catalogues, user/role administration</td>
+<td>ServiceNow-hosted (<code>impact.service-now.com</code>)</td>
+</tr>
+<tr>
+<td><strong>Integration</strong></td>
+<td><strong>Service Bridge</strong></td>
+<td>Core technology enabling secure, real-time, bi-directional data synchronisation between IDI and your instance, using <code>sendPayload()</code> and mapped tables</td>
+<td>Platform capability + dependent apps</td>
+</tr>
+<tr>
+<td><strong>Support</strong></td>
+<td>Now Support + Impact Squad</td>
+<td>Case handling, escalations, operational reviews, advisory sessions</td>
+<td>Now Support portal + IDI</td>
+</tr>
+<tr>
+<td><strong>Governance</strong></td>
+<td>Roles and groups</td>
+<td>Impact roles (platform, scan engine, Instance Observer, user-level), Scan Engine groups, development teams</td>
+<td>Your instance</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-3-how-the-moving-parts-relate">2.3 How the moving parts relate</h3>
+<p>Use this relationship model when explaining Impact to stakeholders:</p>
+<ul>
+<li><strong>Customer (account)</strong> → owns one or more <strong>ServiceNow instances</strong>, and is entitled to an <strong>Impact package</strong> (Guided / Total / Integrated Success) plus optional <strong>Add-ons</strong>.</li>
+<li><strong>Instances</strong> → are registered individually (<strong>My SN Instances</strong>) for Scan Engine integrations, and each onboarded instance is connected to the single <strong>Impact Delivery Instance</strong> for that account. Capability Maps are generated <strong>per instance</strong>.</li>
+<li><strong>Customer stakeholders</strong> → may be organised into <strong>Stakeholder Groups</strong> (for example IT, HR, Finance). A stakeholder group is a customer-defined logical grouping of an account's stakeholders that share objectives; an instance can belong to one or more groups, and Impact personalises the experience per group.</li>
+<li><strong>Users</strong> → are assigned <strong>Impact roles</strong> (in your instance) and <strong>Impact Delivery Instance roles</strong> (in IDI). The role determines the persona view: executive, platform owner, team lead, developer, partner, administrator.</li>
+<li><strong>Services (products/capabilities)</strong> → are the ServiceNow applications and capabilities you are entitled to. Impact tracks each as entitled → planned → in use / not yet activated, and maps capabilities to outcomes and to relevant Accelerators.</li>
+<li><strong>Goals (objectives and outcomes)</strong> → are the business layer: a high-level <strong>business objective</strong> is connected to one or more measurable <strong>business outcomes</strong>, each with a <strong>success metric</strong>, a <strong>reference quarter (baseline)</strong> and a <strong>goal (target)</strong>. Outcomes link to the capabilities that support them and to recommended learning.</li>
+<li><strong>Impact capabilities</strong> → consume the above: recommendations point to capabilities, courses, Accelerators or actions; Product Adoption Roadmaps sequence capabilities into phases aligned to objectives; Value Reports aggregate outcome performance into monetised value by objective.</li>
+<li><strong>Expert engagements (Accelerators/Initiatives)</strong> → are the delivery mechanism for advice and remediation; requests come from the customer (or are squad-recommended) and are consumed against package concurrency entitlements.</li>
+</ul>
+<h3 id="2-4-architecture-and-flow-diagram-slide-ready-description">2.4 Architecture and flow diagram — slide-ready description</h3>
+<p><strong>Diagram title:</strong> ServiceNow Impact — how it works (Australia release)</p>
+<p><strong>Layout (left → right, four columns, with a feedback loop underneath):</strong></p>
+<p><strong>Column 1 — "Your estate" (customer side, grey box):</strong></p>
+<ul>
+<li>Box: <strong>ServiceNow instances</strong> (Production, Test, Development) — ITOM, ITSM, CSM, HRSD, IRM, Security Operations, SAM/HAM, SPM, App Engine</li>
+<li>Inside that box, stacked components:</li>
+<li><strong>Impact Store Application</strong> (Impact Common, Impact Content, Impact Health, Value Management data packs) — <em>All → Impact</em></li>
+<li><strong>Scan Engine + HealthScan definitions + Real-time prevention</strong></li>
+<li><strong>Performance Analytics data collection jobs</strong> (value metrics)</li>
+<li><strong>Users and Roles</strong> (Platform Owner, Impact Admin, Impact App Admin, Developer, Team Lead, Executive, IO Standard/Read Only)</li>
+<li>Side note: <strong>Instance Observer</strong> — off-instance telemetry, entitlement-tiered</li>
+</ul>
+<p><strong>Column 2 — "Secure sync layer" (centre, thin vertical band):</strong></p>
+<ul>
+<li>Box: <strong>Service Bridge</strong> — inbound/outbound payloads, table-mapped, status must read <strong>Active replication</strong></li>
+<li>Small labels above/below: Automated registration (preferred) and Manual registration (regulated / GCC)</li>
+<li>Arrow style: <strong>double-headed</strong> arrow between Column 1 and Column 3 to show bi-directional sync</li>
+</ul>
+<p><strong>Column 3 — "ServiceNow side" (blue box):</strong></p>
+<ul>
+<li>Box: <strong>Impact Delivery Instance (provider)</strong> containing:</li>
+<li><strong>Impact Squad</strong> (CSM / CSE / Platform Architect / Support Account Manager)</li>
+<li><strong>Activity Center</strong> (conversations, tasks, calendar, files, activity log)</li>
+<li><strong>Value management</strong> (objectives, outcomes, value reports)</li>
+<li><strong>Catalogues</strong> (Accelerators, Initiatives, Product Adoption Roadmaps, Capabilities Maps, Training Insights)</li>
+<li>Below it, a small box: <strong>Now Support + 24×7 premium support</strong> and <strong>Developer Support</strong></li>
+</ul>
+<p><strong>Column 4 (right edge) — "Outcomes" (green box):</strong></p>
+<ul>
+<li>Boxes: <strong>Adoption ↑</strong>, <strong>Platform health ↑</strong>, <strong>Performance risk ↓</strong>, <strong>Value realised ($)</strong>, <strong>Upgrade readiness ↑</strong></li>
+</ul>
+<p><strong>Bottom band — the closed loop (arrow leftwards across the whole slide):</strong></p>
+<ul>
+<li>Box: <strong>Foundations → Steady State operating model</strong>: quarterly reviews, health assessments, performance reviews, outcome reviews, roadmap refresh</li>
+</ul>
+<p><strong>Callout bubbles (small, for the presenter):</strong></p>
+<ul>
+<li><em>"Findings stay in your instance — Scan Engine findings are not transmitted to IDI."</em></li>
+<li><em>"Feature availability depends on package (Guided / Total), Add-ons, roles and installed plugins."</em></li>
+<li><em>"Impact Store Application is the exclusive hub for new features from Yokohama onward; IDI retains catalogues and squad collaboration."</em></li>
+</ul>
+<p><strong>One-line flow statement for the slide subtitle:</strong></p>
+<blockquote>
+<p><em>Instrument the instance → interpret with scans, telemetry and value data → recommend and act through experts and Accelerators → measure outcomes and value → repeat on a quarterly cadence.</em></p>
+</blockquote>
+<p><strong>Text-based flow (for the written document):</strong></p>
+<div class="diagram"><div class="diag-row"><div class="diag-col"><div class="diag-head navy">1. Your estate (consumer instance)</div><ul class="diag-body"><li>Impact Store Application — Impact Common / Content / Health</li><li>Platform Health — Scan Engine, HealthScan, real-time prevention, AI fixes</li><li>Value data collection — Performance Analytics packs per product</li><li>Users &amp; roles — Platform Owner, Admin, Developer, Team Lead, Executive</li><li>Instance Observer — off-instance observability</li></ul></div><div class="diag-col"><div class="diag-head green">2. Secure sync layer</div><ul class="diag-body"><li>Service Bridge — automated registration (preferred) or manual (regulated / GCC)</li><li>Inbound + outbound payloads; status must read <b>Active replication</b></li></ul></div><div class="diag-col"><div class="diag-head blue">3. Impact Delivery Instance</div><ul class="diag-body"><li>Impact Squad — CSM / CSE / Platform Architect / SAM</li><li>Activity Center — conversations, tasks, files, calendar</li><li>Value management — objectives, outcomes, value reports</li><li>Catalogues — Accelerators, Initiatives, PARs, Capability Maps</li></ul></div><div class="diag-col"><div class="diag-head navy">4. Business outcomes</div><ul class="diag-body"><li>Adoption · Platform health · Performance &amp; availability · Value realised · Upgrade readiness</li><li>Cadence: quarterly reviews moving Foundations → Steady State</li></ul></div></div><div class="diag-loop">Foundations → Steady State cadence: monthly operational &amp; health reviews · quarterly outcome, support and executive reviews</div><div class="diag-note">Callouts: Scan Engine findings are NOT transmitted to IDI · Feature availability depends on package, add-ons, roles and plugins</div></div>
+<hr />
+<h2 id="3-main-features-of-servicenow-impact">3. Main features of ServiceNow Impact</h2>
+<p>Each feature below follows the same structure so it can be lifted directly into client material: <strong>what it is → how it works → why it is useful → example scenario → expected benefit → availability and dependencies</strong>.</p>
+<blockquote>
+<p><strong>Availability legend used throughout:</strong> <strong>[ALL]</strong> available across Impact packages, subject to role and app installation · <strong>[GUIDED+]</strong> package-dependent (Guided / Total entitlements differ) · <strong>[TOTAL]</strong> Total package or specific Add-on · <strong>[ADD-ON]</strong> purchased separately · <strong>[REQUIRES IDI]</strong> needs the connection to the Impact Delivery Instance · <strong>[REQUIRES AI]</strong> needs Now Assist / ServiceNow Otto skills activated and entitled.</p>
+</blockquote>
+<h3 id="3-1-impact-workspace-impact-store-application-home">3.1 Impact workspace (Impact Store Application home)</h3>
+<ul>
+<li><strong>What it is.</strong> The Impact home page inside your own instance — the operational cockpit for the Impact program. (Note: ServiceNow renamed "Impact Workspace" to simply "Impact" in the Washington DC release; some older material still uses "Impact Workspace".)</li>
+<li><strong>How it works.</strong> Navigate to <strong>All → Impact → Overview</strong>. The home page is a role-personalised hub of widgets: <strong>Recommended next steps</strong>, <strong>Learn about Impact</strong>, <strong>Curated for you</strong>, <strong>Your Impact Squad</strong>, <strong>Impact Foundations</strong>, <strong>Work Items</strong>, <strong>Stay updated</strong> and <strong>Impact Delivery Instance</strong>. Recommendations appear as cards; the three latest are shown, with <strong>View full list</strong> for the complete list.</li>
+<li><strong>Why it is useful.</strong> It converts a subscription into a daily working surface: every persona sees the next best action without hunting through catalogues or email.</li>
+<li><strong>Example scenario.</strong> A platform owner starts the day on <strong>All → Impact → Overview</strong>, accepts an Accelerator recommendation for upgrade readiness, and converts a CMDB remediation recommendation into a Strategic Portfolio Management demand item.</li>
+<li><strong>Expected benefit.</strong> Higher utilisation of the Impact entitlement (fewer "unused benefits"), and a single place where platform work is prioritised and evidenced.</li>
+<li><strong>Availability.</strong> [ALL] · Requires the Impact Store Application installed and Impact roles assigned.</li>
+</ul>
+<h3 id="3-2-impact-delivery-instance-and-impact-activity-center">3.2 Impact Delivery Instance and Impact Activity Center</h3>
+<ul>
+<li><strong>What it is.</strong> The IDI is the ServiceNow-hosted provider instance where your Impact Squad works and where Impact benefits not yet migrated into your instance are accessed. The <strong>Activity Center</strong> is the consolidated view of activities supporting your day-to-day journey.</li>
+<li><strong>How it works.</strong> Access is enabled by your Impact Squad (they send the platform owner a specific URL); IDI administrators assign IDI roles. Activity Center consolidates: <strong>Conversations</strong> (ask your squad directly), <strong>All recommendations</strong>, <strong>Tasks</strong>, <strong>Calendar</strong> (meetings, assessments, goals), <strong>Activity log</strong> and <strong>Files</strong>. It also surfaces your <strong>Value Journey</strong> snapshot, Impact feature usage overview and learning credit balance.</li>
+<li><strong>Why it is useful.</strong> It is the "human layer" of Impact: it keeps expert dialogue, deliverables, evidence and task ownership in one auditable space rather than in inboxes and shared drives.</li>
+<li><strong>Example scenario.</strong> During an upgrade assessment, the squad posts the plan to <strong>Files</strong>, logs the assessment in <strong>Calendar</strong>, assigns remediation tasks in <strong>Tasks</strong>, and answers design questions in <strong>Conversations</strong>.</li>
+<li><strong>Expected benefit.</strong> Reduced coordination overhead and faster expert response; artefacts retained for audit and for the next quarterly review.</li>
+<li><strong>Availability.</strong> [ALL] · Activities shown may differ by subscription level. IDI roles: Impact User, Impact Executive, Impact Platform Owner, Impact Admin, Impact Permissions Authorizer.</li>
+</ul>
+<h3 id="3-3-impact-digest-and-curated-resources">3.3 Impact Digest and curated resources</h3>
+<ul>
+<li><strong>What it is.</strong> <strong>Impact Digest</strong> is a periodically auto-generated, personalised snapshot of your Impact consumption, curated by ServiceNow Customer Success Managers, combined with product content and Impact content.</li>
+<li><strong>How it works.</strong> It is generated periodically; curation is based on the topics your squad has opted into plus consumption statistics, and it points back to goals, platform health, product adoption and value realisation.</li>
+<li><strong>Why it is useful.</strong> Keeps stakeholders informed without meetings, and nudges usage of benefits that are otherwise easy to forget.</li>
+<li><strong>Example scenario.</strong> A service desk manager receives a Digest highlighting adoption progress on incident deflection and a relevant course recommendation.</li>
+<li><strong>Expected benefit.</strong> Improved awareness and adoption of entitlements across a wider stakeholder group.</li>
+<li><strong>Availability.</strong> [ALL] (content varies by package and activity).</li>
+</ul>
+<h3 id="3-4-customer-organisation-and-stakeholder-management">3.4 Customer, organisation and stakeholder management</h3>
+<ul>
+<li><strong>What it is.</strong> The structures that model who Impact serves: customer account, instances, stakeholder groups, users and roles, subscriptions and entitlements.</li>
+<li><strong>How it works.</strong></li>
+<li><strong>Stakeholder Groups (Group Views)</strong> let multiple parts of your organisation (for example IT and Finance) define their own objectives and present them to their own leadership. A stakeholder group is a customer-defined logical group of stakeholders who share objectives; it is a subset of (or equal to) a single account and cannot span multiple accounts. An instance can be associated with one or more groups. The home page personalises to the groups relevant to the user, and results can be filtered across groups and instances.</li>
+<li><strong>Users and roles</strong> are administered per persona: Impact Store Application roles in your instance, and IDI roles in the Impact Delivery Instance (<strong>Activity Center → Instance registration</strong>, IDI admin functions).</li>
+<li><strong>Subscriptions</strong> give one consolidated view of ServiceNow subscriptions, purchased amounts, secondary meters and the capabilities included in each bundle; allocation continues in <strong>Subscription Management</strong> on the instance.</li>
+<li><strong>Multi-instance</strong> handling: each instance is connected and configured separately; Capabilities Maps are generated per instance; outcome comparison across instances is supported with the instance filter.</li>
+<li><strong>Why it is useful.</strong> Large customers rarely have one ServiceNow stakeholder. Group Views prevent "one-size-fits-all" reporting and let each business function own its own value story.</li>
+<li><strong>Example scenario.</strong> HR and IT each maintain separate objectives and roadmaps; the CIO views a combined filtered report across both groups.</li>
+<li><strong>Expected benefit.</strong> Better executive engagement, cleaner value attribution per business function, and clearer entitlement visibility (reducing shelf-ware).</li>
+<li><strong>Availability.</strong> [ALL] for subscriptions and user management; <strong>Group Views</strong> is documented as initially available to limited customers — discuss enablement with your Impact Squad.</li>
+</ul>
+<h3 id="3-5-platform-health-health-scanning-at-scale">3.5 Platform Health — health scanning at scale</h3>
+<ul>
+<li><strong>What it is.</strong> The Platform Health pillar continuously assesses your instance against ServiceNow leading practices. It comprises <strong>HealthScan definitions</strong> (the checks), the <strong>Scan Engine</strong> (the runner), <strong>Scan definitions and definition suites</strong>, <strong>findings</strong>, <strong>Real-Time Prevention / Real-Time Validation</strong>, <strong>Analytics Dashboards</strong>, <strong>Proposed Fix</strong> and (for Total) <strong>Proactive Code Check</strong> functionality.</li>
+<li><strong>How it works.</strong> Scans execute on a schedule or on demand. The Scan Engine supports parallel processing and can be tuned (see <code>view-modify-scan-engine-properties.md</code>, <code>scan-engine-parallel-processing.md</code>, <code>scan-engine-platform-owner-dashboard.md</code>). Findings are produced in your instance and are <strong>not transmitted to the Impact Delivery Instance</strong>. Findings can be reviewed in dashboards per persona (executive, platform owner, team lead, development team) and actioned through remediation work items. Where enabled, <strong>Real-Time Prevention</strong> evaluates changes as they are made rather than after the fact.</li>
+<li><strong>Why it is useful.</strong> It replaces opinion with evidence about instance quality, and shifts detection earlier — from post-incident to pre-change.</li>
+<li><strong>Example scenario.</strong> A development team lead uses the <strong>Team Lead dashboard</strong> to see newly introduced findings after a sprint, assigns remediation to the developer, and re-scans to confirm the finding has cleared.</li>
+<li><strong>Expected benefit.</strong> Lower technical debt, fewer upgrade surprises, measurable health improvement over time.</li>
+<li><strong>Availability.</strong> [ALL] for core scanning; <strong>custom definitions</strong> are capped for Guided (up to 10) and unlimited for Total (verify against your entitlement); <strong>Proactive Code Check</strong> functionality is Total-oriented and is documented as deprecating from Impact Zurich 6.0.8.</li>
+</ul>
+<h3 id="3-6-building-and-managing-scan-definitions">3.6 Building and managing scan definitions</h3>
+<ul>
+<li><strong>What it is.</strong> The ability to author your own checks, group them into <strong>definition suites</strong>, and control how scans run.</li>
+<li><strong>How it works.</strong> Key tasks documented in the Australia release: <code>create-scan-engine-definitions.md</code>, <code>create-scan-engine-definition-suites.md</code>, <code>configure-scan-engine-properties.md</code>, <code>configure-real-time-scanning-properties.md</code>, <code>configure-application-scanning-properties.md</code>, <code>configure-exception-reasons-scan-engine.md</code>, <code>submitting-exception-reasons-scan-engine.md</code>, <code>syncing-exception-reasons.md</code>, <code>understand-scan-engine-results-findings.md</code>, <code>viewing-scan-results-scan-engine.md</code>, <code>initiating-on-demand-scans-scan-engine.md</code>, <code>initiate-limited-def-scans.md</code>, <code>initiate-update-set-scans.md</code>, <code>add-view-scan-engine-related-lists.md</code> and <code>assign-users-scan-engine-groups.md</code>.</li>
+<li><strong>Why it is useful.</strong> Every platform team has house rules ("no business logic in UI policies", "no direct writes to CMDB from integrations"). Custom definitions turn house rules into continuous, auditable checks.</li>
+<li><strong>Example scenario.</strong> An architect writes ten custom definitions that encode the client's integration standards, adds them to a suite, and attaches the suite to the pre-upgrade scan.</li>
+<li><strong>Expected benefit.</strong> Client standards enforced consistently, with evidence, without manual review effort.</li>
+<li><strong>Availability.</strong> [GUIDED+] — custom definition limits differ by package.</li>
+</ul>
+<h3 id="3-7-proactive-code-check">3.7 Proactive Code Check</h3>
+<ul>
+<li><strong>What it is.</strong> A scan capability (with a document suite of its own: <code>proactive-code-check.md</code>, <code>proactive-code-check-scan-suite.md</code>, <code>review-address-proactive-code-check-findings.md</code>) that examines custom code for patterns known to cause problems in future releases.</li>
+<li><strong>How it works.</strong> It runs within the Platform Health/Scan Engine framework and produces findings that are reviewed and remediated like other scan findings.</li>
+<li><strong>Why it is useful.</strong> Custom code is the single biggest source of upgrade breakage; finding a risky pattern months before an upgrade is far cheaper than finding it in production after one.</li>
+<li><strong>Example scenario.</strong> Ahead of a planned Xanadu upgrade, the team runs Proactive Code Check, remediates the flagged script includes, and enters the upgrade window with no code-related blockages.</li>
+<li><strong>Expected benefit.</strong> Predictable upgrades, less emergency remediation, lower regression risk.</li>
+<li><strong>Availability.</strong> [TOTAL]-oriented; documented as deprecating from Impact Zurich 6.0.8 — confirm current status with your squad before designing it into a roadmap.</li>
+</ul>
+<h3 id="3-8-instance-observer-off-instance-observability">3.8 Instance Observer — off-instance observability</h3>
+<ul>
+<li><strong>What it is.</strong> A monitoring capability that observes your instance <strong>from outside</strong> it: performance and availability monitoring, alerting, triage, reporting/analytics and user-experience insights. (Docs use both "Instance Observer" and "Instance Observatory" for the same feature.)</li>
+<li><strong>How it works.</strong> Documented areas include: <strong>core performance</strong>, <strong>application monitoring (APM)</strong>, <strong>database performance</strong>, <strong>ECC queue</strong>, <strong>email performance</strong>, <strong>events</strong>, <strong>host health</strong>, <strong>jobs</strong>, <strong>load balancer</strong>, <strong>node health</strong>, <strong>pools/replica lag</strong>, <strong>schedulers</strong>, <strong>semaphores</strong>, <strong>standby replica lag</strong>, <strong>user info metrics</strong>, <strong>availability</strong>, <strong>cluster details</strong>, <strong>anomalies detection</strong> and <strong>root-cause correlation</strong>. Alerting covers <strong>popular alerts</strong> and <strong>custom alerts</strong>, <strong>anomaly alerts</strong>, <strong>threshold generation</strong>, <strong>RCC alerts</strong> and <strong>Long-pending job alert cards</strong>; alerts can be managed and notifications received via webhook (customer-configured or third-party). Reporting is via <strong>I/O reports</strong>, <strong>analytics</strong>, <strong>performance insights</strong>, and a <strong>customizable dashboard</strong>. User-experience monitoring requires an admin to review and accept <strong>Terms &amp; Conditions</strong> via <strong>Manage Permissions</strong> in the IDI; user IDs are anonymised by default with an opt-in for non-anonymised collection.</li>
+<li><strong>Why it is useful.</strong> If the instance is slow, the instance's own monitoring may be the first casualty. Off-instance observation keeps visibility during exactly the incidents that matter most, and alerts catch degradation before users report it.</li>
+<li><strong>Example scenario.</strong> A node health alert fires at 02:00; the on-call engineer uses triage and root-cause correlation to identify a database bottleneck and resolves it before the business day starts.</li>
+<li><strong>Expected benefit.</strong> Faster detection and mean-time-to-resolution, fewer user-reported performance incidents, and evidence for capacity and performance planning.</li>
+<li><strong>Availability.</strong> [GUIDED+] — seats, look-back window, alert counts and analytics differ materially by package (Guided ≈ 5 seats / 45-day look-back / 6 alerts vs Total ≈ 10 seats / 6-month look-back / 40 alerts; analytics is Total-only). Instance Observer is <strong>not</strong> available in the ServiceNow mobile app. Verify your exact entitlement.</li>
+</ul>
+<h3 id="3-9-value-management-objectives-outcomes-and-value-reports">3.9 Value Management — objectives, outcomes and value reports</h3>
+<ul>
+<li><strong>What it is.</strong> The business-value layer: <strong>business objectives</strong> connected to measurable <strong>business outcomes</strong>, each with a success metric, a reference quarter and a goal, tracked through <strong>Outcome Insights</strong> and monetised in <strong>Value Reports</strong>.</li>
+<li><strong>How it works.</strong> Objectives and outcomes are created and managed in the Impact Delivery Instance (<code>objectives-and-outcomes-in-impact-delivery-instance.md</code>, <code>manage-objectives-and-outcomes_0.md</code>) and, for the parts that have migrated, in the Impact Store Application. Data collection jobs (per product) populate the metrics that drive outcomes; <strong>Outcome Insights</strong> show whether an outcome is on track against its benchmark and goal and recommend capabilities/learning; <strong>Value Reports</strong> aggregate outcome performance into monetised value with visible assumptions.</li>
+<li><strong>Why it is useful.</strong> It is the difference between claiming value and demonstrating it. Because each outcome carries a metric, a baseline and a target, the report is auditable and the assumptions are explicit.</li>
+<li><strong>Example scenario.</strong> The objective "Reduce cost to serve" is linked to outcomes for incident deflection, self-service adoption and mean-time-to-resolve; six months later the Value Report shows the realisation attributable to the ServiceNow program against the agreed baseline.</li>
+<li><strong>Expected benefit.</strong> Credible ROI reporting to the executive and finance audience, and a defensible basis for continued investment.</li>
+<li><strong>Availability.</strong> [TOTAL] principally (Value Reports require <strong>at least two years of product data</strong> to be meaningful); objectives/outcomes have a wider footprint — confirm per feature.</li>
+</ul>
+<h3 id="3-10-product-adoption-roadmaps-and-capability-maps">3.10 Product Adoption Roadmaps and Capability Maps</h3>
+<ul>
+<li><strong>What it is.</strong> <strong>Capability Maps</strong> show what you own and how much of it you use; <strong>Product Adoption Roadmaps (PARs)</strong> sequence capabilities into phased adoption plans aligned to objectives.</li>
+<li><strong>How it works.</strong> A Capability Map is generated <strong>per instance</strong> from entitlement and usage data and maps capability → product → adoption status. PARs are created and published (<code>create-and-publish-a-product-adoption-roadmap.md</code>) with phases, capabilities and target dates; the <strong>capabilities map mapping</strong> (<code>product-adoption-roadmap-capabilities-map-mapping.md</code>) ties roadmap items to the map. Pre-built PAR templates ship with <strong>Impact Content</strong>.</li>
+<li><strong>Why it is useful.</strong> It answers "what should we do next, and in what order?" with a plan grounded in what you actually own, rather than a generic maturity model.</li>
+<li><strong>Example scenario.</strong> A client owns ITSM Pro, ITOM Discovery and HRSD. The Capability Map shows Discovery is under-adopted; the PAR sequences Discovery expansion before an ITOM event-management phase, and the recommendation engine starts surfacing the matching Accelerator.</li>
+<li><strong>Expected benefit.</strong> Higher return on existing licence spend, fewer shelf-ware renewals, and a roadmap the business can follow.</li>
+<li><strong>Availability.</strong> [ALL] for Capability Maps; PAR authoring/publishing depends on role and package.</li>
+</ul>
+<h3 id="3-11-recommendations">3.11 Recommendations</h3>
+<ul>
+<li><strong>What it is.</strong> The recommendation engine: rule-based and AI-assisted suggestions of the next best action, surfaced in the Impact Store Application and the IDI.</li>
+<li><strong>How it works.</strong> Recommendations appear on the Impact home page (<strong>Recommended next steps</strong>) and in the IDI (<strong>All recommendations</strong>). Each has a <strong>recommendation details page</strong> (<code>recommendation-details-page-in-impact-store.md</code>) explaining rationale and the actions available: adopt a capability, run an Accelerator, take a course, remediate a finding, target an outcome. Recommendations can be <strong>converted into work items</strong> (<code>creating-work-items-using-recommendations-and-initiatives.md</code>, <code>convert-spm-entity-impact-entity-recommendations.md</code>, <code>create-spm-work-item-impact-entity.md</code>) so they enter normal governance, or converted into Impact entities the other way (<code>using-recommendations-iip-ws.md</code>).</li>
+<li><strong>Why it is useful.</strong> It removes the "blank page" problem — most programs stall not because the team disagrees but because nobody is sure what the highest-value next step is.</li>
+<li><strong>Example scenario.</strong> After a scan reveals unused CMDB health dashboards, the engine recommends the matching Accelerator; the platform owner converts it into an SPM demand and the squad delivers it in the next quarter.</li>
+<li><strong>Expected benefit.</strong> Faster decisions, better prioritisation, and traceability from recommendation to delivered outcome.</li>
+<li><strong>Availability.</strong> [ALL]; quality improves as scan, adoption and value data accumulate.</li>
+</ul>
+<h3 id="3-12-accelerators-and-initiatives">3.12 Accelerators and Initiatives</h3>
+<ul>
+<li><strong>What it is.</strong> <strong>Accelerators</strong> are fixed-scope, expert-led engagements delivered by ServiceNow against a catalog; <strong>Initiatives</strong> are multi-Accelerator programs that sequence work towards a larger goal.</li>
+<li><strong>How it works.</strong> The catalog is shared between the Impact Store Application and the IDI (<strong>All → Impact → Accelerator and Initiatives → Overview</strong>; IDI: <strong>Impact → Initiatives &amp; Accelerators</strong>). You see usage status (overall state, in-progress expert-led count by category, on-demand count) and a list with name, type, engagement type, sub-type, progress state, target completion date and owner. <strong>Accelerator sub-catalogs:</strong> <strong>Architecture</strong>, <strong>Strategy</strong>, <strong>Technical</strong> and <strong>Optimization</strong>. Requests are made from the IDI or the app (<code>request-accelerator.md</code>) and are subject to <strong>concurrency</strong> entitlements: <strong>Guided — 1 at a time across the catalog; Total — 7 concurrent</strong> (2 each for Architecture, Strategy and Technical; 1 for Optimization). Add-ons add concurrencies (<strong>Strategic Value +2 Strategy</strong>, <strong>Platform Governance +2 Architecture</strong>, <strong>Platform Optimization +1 Optimization</strong>). <strong>On-demand</strong> accelerators do not have concurrency limits (not available to Guided; verify).</li>
+<li><strong>Why it is useful.</strong> It converts advisory relationship into delivered artefacts with defined scope — the fastest available route from "we should" to "we did".</li>
+<li><strong>Example scenario.</strong> A client needs a governed CMDB roadmap; the squad runs the CMDB/CSDM Architecture Accelerator, producing a target model and a phased plan in weeks rather than months.</li>
+<li><strong>Expected benefit.</strong> Faster time-to-value on specific goals, expert quality without permanent headcount, and predictable consumption of the entitlement.</li>
+<li><strong>Availability.</strong> [GUIDED+] · Accelerator scheduling is subject to <strong>resource availability and concurrency limits</strong> — plan engagements in advance.</li>
+</ul>
+<h3 id="3-13-impact-squad-the-human-layer">3.13 Impact Squad — the human layer</h3>
+<ul>
+<li><strong>What it is.</strong> Your named ServiceNow experts: <strong>Customer Success Manager (CSM)</strong> in all packages, plus <strong>Customer Success Executive (CSE)</strong>, <strong>Platform Architect</strong> and <strong>Support Account Manager (SAM)</strong> in higher packages.</li>
+<li><strong>How it works.</strong> The squad is reachable through the IDI <strong>Activity Center</strong> (conversations, tasks, calendar, files) and orchestrates onboarding (Impact Kickoff Meeting), the Foundations phase, Periodic Business Reviews, health assessments and Accelerator delivery. Squad access to your instance is <strong>read-only by default, time-boxed (30 days), revocable</strong>, and re-approval is expected quarterly (<code>hop-access-impact-squad.md</code>).</li>
+<li><strong>Why it is useful.</strong> Tooling without expertise produces dashboards nobody acts on. The squad is what turns findings into decisions.</li>
+<li><strong>Example scenario.</strong> A new platform owner inherits the program mid-year; the CSM runs a re-baseline workshop and rebuilds the roadmaps around the new team's priorities.</li>
+<li><strong>Expected benefit.</strong> Faster onboarding for new platform leaders, continuity of the value narrative, and an escalation path that is already informed.</li>
+<li><strong>Availability.</strong> [ALL] with package-dependent seniority and coverage.</li>
+</ul>
+<h3 id="3-14-developer-support">3.14 Developer Support</h3>
+<ul>
+<li><strong>What it is.</strong> Named ServiceNow engineers who help troubleshoot and improve <strong>your existing customisations</strong> — beyond the break-fix scope of standard support.</li>
+<li><strong>How it works.</strong> Named individuals are designated per entitlement; access is managed (<code>manage-developer-support-user-access.md</code>) and usage is visible in <strong>Developer Support Usage</strong> (<code>developer-support-usage.md</code>). Cases are raised through Developer Support (<code>create-developer-support-case.md</code>). Guided provides 5 seats; Total provides 10 (verify).</li>
+<li><strong>Why it is useful.</strong> Most difficult incidents involve custom code that standard support cannot own. Developer Support gives your developers a senior engineer to reason with, not just a case queue.</li>
+<li><strong>Example scenario.</strong> A custom business rule fails intermittently after month-end; Developer Support helps isolate the race condition and reviews the fix before deployment.</li>
+<li><strong>Expected benefit.</strong> Reduced mean-time-to-resolve on complex defects, better-quality customisations, and less reliance on external system integrators for diagnosis.</li>
+<li><strong>Availability.</strong> [GUIDED+] / <strong>[ADD-ON]</strong> · Developer Support does <strong>not</strong> cover net-new implementations or customisations that break after a family upgrade — raise those with Now Support.</li>
+</ul>
+<h3 id="3-15-learning-training-insights-and-coaching">3.15 Learning, training insights and coaching</h3>
+<ul>
+<li><strong>What it is.</strong> Learning <strong>credits</strong>, on-demand courses, certifications, and <strong>Training Insights</strong> that recommend learning contextually.</li>
+<li><strong>How it works.</strong> <strong>Training Insights</strong> (<code>training-insights.md</code>) show learning credits (remaining, earned, used), allocated/expiring amounts, and learning recommendations. A <strong>contextual learning recommendation</strong> analyses an outcome's performance and its associated capabilities, then recommends the most relevant ServiceNow University courses; a single learning item can address multiple capabilities, and multiple courses can be recommended for one capability. Recommendations also surface in the Impact home page and appear when outcomes are below target. Learning credits expire; <strong>learning insights</strong> show the balance in IDI.</li>
+<li><strong>Why it is useful.</strong> Adoption fails where skills are missing. Linking a specific course to a specific under-performing outcome makes learning purposeful rather than generic.</li>
+<li><strong>Example scenario.</strong> An outcome on "reduce MTTR" is below goal; the recommendation engine surfaces the relevant ServiceNow University course for the incident-management team, funded by learning credits.</li>
+<li><strong>Expected benefit.</strong> Faster capability uplift, higher adoption of delivered features, and measurable use of an entitlement that is otherwise commonly expired unused.</li>
+<li><strong>Availability.</strong> [ALL] with package-dependent credit amounts.</li>
+</ul>
+<h3 id="3-16-subscriptions-and-entitlement-visibility">3.16 Subscriptions and entitlement visibility</h3>
+<ul>
+<li><strong>What it is.</strong> A consolidated view of ServiceNow subscriptions, purchased amounts, secondary meters and the capabilities included in each bundle.</li>
+<li><strong>How it works.</strong> Visible in the Impact Store Application; allocation continues in <strong>Subscription Management</strong> on the instance. It feeds Capability Maps (Licensing Engine).</li>
+<li><strong>Why it is useful.</strong> Clients frequently do not know precisely which capabilities they already own — which is how shelf-ware accumulates at renewal.</li>
+<li><strong>Example scenario.</strong> Ahead of renewal, a client discovers that ITOM capabilities were purchased but never activated, and re-plans rather than re-buys.</li>
+<li><strong>Expected benefit.</strong> Better renewal decisions and demonstrable return on existing spend.</li>
+<li><strong>Availability.</strong> [ALL].</li>
+</ul>
+<h3 id="3-17-consumption-reporting-benefits-amp-usage">3.17 Consumption reporting — Benefits &amp; Usage</h3>
+<ul>
+<li><strong>What it is.</strong> The <strong>Consumption Report</strong> at <strong>Impact → Impact Benefits &amp; Usage</strong>, showing how the Impact entitlement has actually been consumed.</li>
+<li><strong>How it works.</strong> Usage is filtered to a selected period (default one year): Accelerators and Initiatives usage (ongoing, completed, not started; in-progress counts by Architecture/Strategy/Technical/Optimization), <strong>company active Now Support cases by priority P1–P4</strong> with links into Now Support, advisory session requests, and (for non-Guided) premium role/advisory sections. <strong>Benefits &amp; Usage</strong> summarises program benefits: Impact Core, Experts on Demand, Platform Health and Monitoring, Learning and Coaching, Premium Technical Support. There are also <strong>IDE consumption report</strong> and <strong>AI-based consumption report summarisation</strong> capabilities.</li>
+<li><strong>Why it is useful.</strong> Renewal conversations are far easier when you can show exactly what was used and what was left on the table.</li>
+<li><strong>Example scenario.</strong> At the annual review, the client shows that Accelerator consumption was 80% and identifies learning credits as the under-used benefit to target next year.</li>
+<li><strong>Expected benefit.</strong> Transparent value accounting, and an evidence base for package right-sizing.</li>
+<li><strong>Availability.</strong> [ALL] with package-dependent sections.</li>
+</ul>
+<h3 id="3-18-technical-kpis-and-benchmarking">3.18 Technical KPIs and benchmarking</h3>
+<ul>
+<li><strong>What it is.</strong> <strong>Tech KPIs</strong> — standardised technical measurements of your instance, with the ability to compare against peers, and trend lines against benchmark and goal.</li>
+<li><strong>How it works.</strong> Tech KPI scores are produced from instance data and surfaced in Platform Health reporting. Peer comparison shows how your KPI scores compare to other customers (and, where relevant, industry benchmark comparisons are referenced at the program level). Value Library <strong>Metric / Benchmark / Goal / Trend</strong> chart lines carry a reference quarter and a goal; a multi-instance comparison view compares KPI scores across your own instances. There is <strong>no standalone "benchmarking module"</strong> — benchmarking exists as peer comparison plus the benchmark/goal lines in the Value Library and Tech KPI reporting.</li>
+<li><strong>Why it is useful.</strong> A number without context is not actionable; "your KPI is 62" is far less useful than "you are below the peer median, and here is the Accelerator that fixes it".</li>
+<li><strong>Example scenario.</strong> An architect uses peer comparison to justify investment in Discovery, because the KPI shows materially lower coverage than comparable organisations.</li>
+<li><strong>Expected benefit.</strong> Objective prioritisation and a credible answer to "how good are we?" in board reporting.</li>
+<li><strong>Availability.</strong> [TOTAL]-oriented for the richest views; base KPI reporting is wider — verify.</li>
+</ul>
+<h3 id="3-19-monthly-health-assessment">3.19 Monthly Health Assessment</h3>
+<ul>
+<li><strong>What it is.</strong> A recurring ServiceNow-delivered assessment of your instance's health, driven by the squad.</li>
+<li><strong>How it works.</strong> Scans are scheduled (<code>schedule-monthly-health-assessment-scans.md</code>), the <strong>Health Assessment dashboard</strong> is used to review outcomes (<code>health-assessment-dashboard.md</code>, <code>manage-health-assessment-dashboard.md</code>), and consent must be captured before ServiceNow resources scan your instance (the Monthly Health Assessment prompts for consent when scheduling). Report delivery is typically around <strong>two weeks</strong> after the assessment.</li>
+<li><strong>Why it is useful.</strong> It creates a forced, regular, expert-reviewed checkpoint on platform health, independent of incidents.</li>
+<li><strong>Example scenario.</strong> Each month the client's platform owner receives the assessment, reviews the health score movement by category, and agrees two remediation actions with the squad.</li>
+<li><strong>Expected benefit.</strong> Continuous improvement rather than episodic clean-ups, with an auditable cadence.</li>
+<li><strong>Availability.</strong> [GUIDED+] · <strong>ServiceNow is not responsible for implementing or managing the Monthly Health Assessment</strong>; your squad can assist with instance switching and cancellation.</li>
+</ul>
+<h3 id="3-20-impact-operating-model-foundations-and-steady-state">3.20 Impact operating model — Foundations and Steady State</h3>
+<ul>
+<li><strong>What it is.</strong> The engagement rhythm that makes the tooling stick: an initial <strong>Foundations</strong> phase followed by a repeating <strong>Steady State</strong>.</li>
+<li><strong>How it works.</strong> Documented in <code>impact-operating-model.md</code>. Foundations is the onboarding/establishment period (roughly the first 90–120 days) covering kickoff, instance connection, roles, initial scans, objectives and roadmaps. Steady State then repeats <strong>monthly operational and health reviews</strong> and <strong>quarterly outcome, support and executive reviews</strong>.</li>
+<li><strong>Why it is useful.</strong> Impact is a program, not an installation. The cadence is what converts features into outcomes.</li>
+<li><strong>Example scenario.</strong> Monthly: platform owner + squad review health findings; Quarterly: executive sponsor reviews outcome performance and value realisation, and re-prioritises the roadmap.</li>
+<li><strong>Expected benefit.</strong> Predictable governance, continuous improvement, and clear executive visibility.</li>
+<li><strong>Availability.</strong> [ALL].</li>
+</ul>
+<h3 id="3-21-ai-capabilities-now-assist-for-impact-and-servicenow-otto">3.21 AI capabilities — Now Assist for Impact and ServiceNow Otto</h3>
+<ul>
+<li><strong>What it is.</strong> GenAI features embedded in Impact. In the Australia release, Now Assist branding for this context moves to <strong>ServiceNow Otto</strong> — the same capabilities under the new name.</li>
+<li><strong>How it works.</strong> Documented Australia-release AI capabilities include: <strong>GenAI-based consumption report summarisation</strong> (<code>gen-ai-based-consumption-report-summarization.md</code>), <strong>AI code fix for Platform Health</strong> (<code>configure-ai-code-fix-for-platform-health.md</code>, <code>batch-remediation-with-ai.md</code>), <strong>prevent/resolve technical debt with AI</strong> (<code>prevent-resolve-technical-debt-ai.md</code>), and activation of Now Assist skills in Now Assist for Impact (<code>activate-now-assist-skills-in-now-assist-for-impact.md</code>). AI code fix requires Now Assist for Impact 3.03+, Now Assist for Platform 11.01+, the skill activated, and the system property <strong><code>sn_impact_gen_ai.ai_fix.enabled = true</code></strong> (default <code>false</code>). Role: <strong><code>sn_impact_gen_ai.ai_fix_user</code></strong>.</li>
+<li><strong>Why it is useful.</strong> It compresses the two slowest parts of remediation — writing the fix and writing the report.</li>
+<li><strong>Example scenario.</strong> After a scan produces 40 Proactive Code Check findings of similar pattern, batch remediation with AI proposes fixes for review rather than leaving 40 developer tickets.</li>
+<li><strong>Expected benefit.</strong> Faster remediation throughput and less summarisation effort for reporting.</li>
+<li><strong>Availability.</strong> [REQUIRES AI] · Now Assist skills must be entitled and activated; some skills are package-dependent.</li>
+</ul>
+<h3 id="3-22-integrations-jira-azure-devops-spm-cwm-update-sets-automation">3.22 Integrations — Jira, Azure DevOps, SPM, CWM, update sets, automation</h3>
+<ul>
+<li><strong>What it is.</strong> Connectors and work-item integrations that let Impact findings and recommendations enter the tools your teams already use.</li>
+<li><strong>How it works.</strong> Documented options include <strong>Jira</strong> (<code>configure-jira-integration-options.md</code>), <strong>Azure DevOps</strong> (<code>configure-azure-devops-integration-options.md</code>), <strong>update-set integration</strong> (<code>update-set-integration.md</code>, <code>update-set-scanning-properties2.md</code>), <strong>user-story integration</strong> (<code>user-story-integration-properties.md</code>), <strong>ServiceNow integration options</strong> (<code>configuring-sn-integration-options.md</code>), <strong>AES/AEMC integration properties</strong>, <strong>team development scanning properties</strong>, and conversion of recommendations into <strong>SPM</strong> work items or <strong>CWM</strong> tasks. Integration methods include <strong>OAuth 2.0</strong> (<code>configure-oauth-auth-method.md</code>, <code>configure-oauth-auth-method-prod.md</code>) and <strong>Basic authentication</strong> (<code>configure-basic-auth-method.md</code>).</li>
+<li><strong>Why it is useful.</strong> Remediation only happens if the work lands in the team's backlog. Impact does not ask teams to adopt a new tool to fix findings.</li>
+<li><strong>Example scenario.</strong> Every High-severity scan finding automatically creates a Jira issue in the correct team's board with the finding context attached.</li>
+<li><strong>Expected benefit.</strong> Higher remediation completion rates and no dual-tracking of work.</li>
+<li><strong>Availability.</strong> [ALL] / [GUIDED+] depending on connector — OAuth 2.0 is preferred over Basic authentication.</li>
+</ul>
+<h3 id="3-23-storage-and-platform-capacity">3.23 Storage and platform capacity</h3>
+<ul>
+<li><strong>What it is.</strong> The storage footprint that Impact consumes on your instance and how to plan it.</li>
+<li><strong>How it works.</strong> Documented in <code>impact-store-app-storage-estimation.md</code>: storage grows with usage; <strong>attachments are the biggest driver</strong>; the IDI connection adds additional storage consumption (data migration/sync). Value Management data collection and scan findings also contribute.</li>
+<li><strong>Why it is useful.</strong> Storage is a real design constraint, especially for clients with fixed instance capacity or regulated data-residency constraints.</li>
+<li><strong>Example scenario.</strong> A client with tight storage headroom reviews expected consumption before enabling full data migration, and sizes attachment retention accordingly.</li>
+<li><strong>Expected benefit.</strong> No surprise capacity incidents, and predictable infrastructure planning.</li>
+<li><strong>Availability.</strong> [ALL].</li>
+</ul>
+<h3 id="3-24-security-data-governance-and-domain-separation">3.24 Security, data governance and domain separation</h3>
+<ul>
+<li><strong>What it is.</strong> The controls and limitations that govern how Impact data is handled.</li>
+<li><strong>How it works.</strong></li>
+<li><strong>Consent gates:</strong> user-experience monitoring requires Terms &amp; Conditions acceptance via <strong>Manage Permissions</strong>; Monthly Health Assessment prompts for consent when scheduling; requirements are tracked in <strong>Manage Permissions</strong> (<code>grant-ide-permissions.md</code>).</li>
+<li><strong>Findings stay local:</strong> Scan Engine findings are not transmitted to the IDI.</li>
+<li><strong>Squad access</strong> to your instance is read-only, 30-day, revocable, re-approved quarterly.</li>
+<li><strong>Data-moving dependent apps</strong> (relevant to security review): the <strong>Service Bridge</strong> stack, <strong>Cloud Storage</strong>, <strong>Licensing Engine</strong> and the <strong>MIF Customer Instance</strong>. Impact Common, Impact Content and Impact Health do <strong>not</strong> move data off-instance.</li>
+<li><strong>Domain separation is not supported</strong> for Impact (<code>impact-domain-separation.md</code>).</li>
+<li><strong>Restricted environments:</strong> portions of Impact are unavailable in FedRAMP, NSC DOD IL5, Australia IRAP-Protected data centres, self-hosted environments, and to MSPs (except internal use).</li>
+<li><strong>Why it is useful.</strong> These are the questions a security or risk team will ask first; answering them early prevents schedule slip.</li>
+<li><strong>Example scenario.</strong> A security review identifies the Service Bridge stack and Licensing Engine as the data-egress components and scopes the assessment to those, avoiding a stall on the wider app.</li>
+<li><strong>Expected benefit.</strong> Faster security approval and no late-stage surprises.</li>
+<li><strong>Availability.</strong> [ALL] — limitations apply regardless of package.</li>
+</ul>
+<h3 id="3-25-partner-and-managed-service-provider-considerations">3.25 Partner and managed-service-provider considerations</h3>
+<ul>
+<li><strong>What it is.</strong> How Impact behaves for MSPs and partners.</li>
+<li><strong>How it works.</strong> Impact documentation notes restrictions for managed service providers (except for their internal use), and there are specific entitlement variants referenced (for example "MSP Dedicated" and "MSP Domain Separated" in the Total entitlement tables). <code>hop-access-impact-squad.md</code> describes squad access arrangements.</li>
+<li><strong>Why it is useful.</strong> Partner-delivered ServiceNow estates have different governance; knowing the constraints up front avoids designing an operating model that cannot be licensed.</li>
+<li><strong>Example scenario.</strong> An MSP dual-role (internal use + client delivery) confirms with ServiceNow which portions of Impact may be used for client instances.</li>
+<li><strong>Expected benefit.</strong> Compliant design and no rework at contract time.</li>
+<li><strong>Availability.</strong> Verify directly with ServiceNow for MSP scenarios.</li>
+</ul>
+<hr />
+<h2 id="4-client-scenarios-twelve-worked-examples">4. Client scenarios — twelve worked examples</h2>
+<p>Each scenario follows <strong>problem → Impact capability → what the client does → measurable outcome</strong>. These are the scenarios most commonly raised in Australian enterprise and government ServiceNow programs; adapt the numbers to your own baseline.</p>
+<h3 id="4-1-the-renewal-conversation-you-cannot-support">4.1 The renewal conversation you cannot support</h3>
+<ul>
+<li><strong>Problem.</strong> At renewal, the CIO asks what value the platform delivered. The team has incident statistics and anecdote, but no monetised business case.</li>
+<li><strong>Capability.</strong> Value Management (objectives → outcomes → success metrics), Outcome Insights, Value Reports, Tech KPIs.</li>
+<li><strong>What the client does.</strong> Agree 3–5 business objectives with the executive sponsor (for example "reduce cost to serve", "improve employee experience"). Link each to measurable outcomes with a baseline quarter and a target. Enable the per-product data collection jobs that populate the metrics. Review outcome trends monthly with the squad; publish the annual Value Report.</li>
+<li><strong>Measurable outcome.</strong> A defensible, assumption-documented ROI statement at renewal — with the honest caveat that a Value Report needs <strong>at least two years of product data</strong> to be meaningful, so start early rather than at renewal time.</li>
+</ul>
+<h3 id="4-2-shelf-ware-paying-for-capability-nobody-uses">4.2 Shelf-ware: paying for capability nobody uses</h3>
+<ul>
+<li><strong>Problem.</strong> Licences were purchased for ITOM, HRSD and SecOps, but adoption is patchy. Nobody can state confidently which capabilities are live.</li>
+<li><strong>Capability.</strong> Subscriptions view, Capability Maps (per instance), Product Adoption Roadmaps, adoption status tracking, recommendations.</li>
+<li><strong>What the client does.</strong> Review the Capability Map, agree the top five under-adopted capabilities, build a PAR that sequences them against the business calendar, and accept the matching recommendations/Accelerators.</li>
+<li><strong>Measurable outcome.</strong> Reduced shelf-ware at renewal and a sequenced adoption plan instead of a wish list.</li>
+</ul>
+<h3 id="4-3-technical-debt-discovered-too-late">4.3 Technical debt discovered too late</h3>
+<ul>
+<li><strong>Problem.</strong> A major upgrade is six weeks away and the team does not know what will break.</li>
+<li><strong>Capability.</strong> HealthScan definitions, Scan Engine (including update-set scans), Proactive Code Check, Real-Time Prevention, findings dashboards, AI code fixes.</li>
+<li><strong>What the client does.</strong> Run a full scan, triage findings by severity using the development-team and team-lead dashboards, remediate the top risks, re-scan to confirm, and use AI code fix review for repetitive patterns.</li>
+<li><strong>Measurable outcome.</strong> An upgrade with materially fewer code-related defects and a documented pre-upgrade health baseline. (Run the first full scan overnight — it can take hours.)</li>
+</ul>
+<h3 id="4-4-performance-incidents-reported-by-users-not-monitoring">4.4 Performance incidents reported by users, not monitoring</h3>
+<ul>
+<li><strong>Problem.</strong> Users report slowness; by the time the platform team investigates, the condition has passed and root cause is guesswork.</li>
+<li><strong>Capability.</strong> Instance Observer — performance metrics, availability, anomaly detection, alerts, triage, root-cause correlation.</li>
+<li><strong>What the client does.</strong> Enable Instance Observer, tune alert thresholds (anomaly-based and custom), configure webhook notifications into the existing on-call channel, and adopt the triage workflow.</li>
+<li><strong>Measurable outcome.</strong> Performance degradation detected before user reports; shorter MTTR because correlation evidence arrives with the alert.</li>
+</ul>
+<h3 id="4-5-the-new-platform-owner-inherits-an-undocumented-program">4.5 The new platform owner inherits an undocumented program</h3>
+<ul>
+<li><strong>Problem.</strong> The person who led the ServiceNow program leaves. The replacement inherits licences, customisations and conflicting priorities with no context.</li>
+<li><strong>Capability.</strong> Impact Squad (CSM), Impact home page, Digest, Activity Center, Product Adoption Roadmaps, training insights, learning credits.</li>
+<li><strong>What the client does.</strong> Run a re-baseline workshop with the squad, review the roadmap and health findings, and fund role-based training from learning credits.</li>
+<li><strong>Measurable outcome.</strong> Continuity of the value narrative and a documented plan within the first quarter of the new owner's tenure.</li>
+</ul>
+<h3 id="4-6-change-management-is-reactive-not-preventative">4.6 Change management is reactive, not preventative</h3>
+<ul>
+<li><strong>Problem.</strong> Every change carries regression risk; testing is manual and incomplete, and bad changes reach production.</li>
+<li><strong>Capability.</strong> Real-Time Prevention / Real-Time Validation, scan definitions and suites, scan exception reasons, team development scanning.</li>
+<li><strong>What the client does.</strong> Encode organisational standards as custom scan definitions, enable real-time validation for the highest-risk record types, and route exceptions through an approved exception-reason process.</li>
+<li><strong>Measurable outcome.</strong> Fewer production incidents attributable to change, with evidence of enforcement rather than policy statements.</li>
+</ul>
+<h3 id="4-7-skills-gap-is-the-real-adoption-blocker">4.7 Skills gap is the real adoption blocker</h3>
+<ul>
+<li><strong>Problem.</strong> Features are delivered but adoption stalls; teams do not know how to use what was built.</li>
+<li><strong>Capability.</strong> Training Insights, contextual learning recommendations, learning credits, ServiceNow University courses.</li>
+<li><strong>What the client does.</strong> Identify the under-performing outcome, accept the contextual learning recommendation, and fund the course from expiring credits before they lapse.</li>
+<li><strong>Measurable outcome.</strong> Measurable improvement on the linked outcome metric and higher feature adoption.</li>
+</ul>
+<h3 id="4-8-remediation-work-never-gets-prioritised">4.8 Remediation work never gets prioritised</h3>
+<ul>
+<li><strong>Problem.</strong> Scans produce good findings, but they sit in a list. No finding converts into funded, scheduled work.</li>
+<li><strong>Capability.</strong> Recommendation → work-item conversion into <strong>SPM</strong> or <strong>CWM</strong>, integrations to <strong>Jira / Azure DevOps</strong>, Accelerator requests.</li>
+<li><strong>What the client does.</strong> Route High-severity findings automatically into the team's existing backlog tool with the finding context attached; convert strategic recommendations into SPM demands during quarterly planning.</li>
+<li><strong>Measurable outcome.</strong> Rising remediation completion rate and no dual-tracking of platform work.</li>
+</ul>
+<h3 id="4-9-multiple-business-units-one-platform-competing-priorities">4.9 Multiple business units, one platform, competing priorities</h3>
+<ul>
+<li><strong>Problem.</strong> IT, HR and Finance each want to shape the roadmap; a single global report satisfies nobody and gets ignored.</li>
+<li><strong>Capability.</strong> Stakeholder Groups (Group Views), per-group objectives, instance filtering, cross-group reporting.</li>
+<li><strong>What the client does.</strong> Define stakeholder groups that align to real accountability boundaries, let each group own objectives and reporting, and give the CIO a filtered combined view.</li>
+<li><strong>Measurable outcome.</strong> Higher executive engagement and cleaner value attribution per function. (Note: Group Views is documented as initially available to limited customers — confirm enablement with your squad. A group cannot span multiple accounts.)</li>
+</ul>
+<h3 id="4-10-controlled-environment-constrained-feature-set">4.10 Controlled environment, constrained feature set</h3>
+<ul>
+<li><strong>Problem.</strong> Part of the estate sits in a restricted environment (for example IRAP-Protected), or the organisation is an MSP, and it is unclear which Impact features may be used.</li>
+<li><strong>Capability.</strong> Documented availability restrictions, domain-separation limitation, squad guidance.</li>
+<li><strong>What the client does.</strong> Confirm the exact feature subset with the Impact Squad before design sign-off, and confirm <strong>before</strong> committing to a roadmap that assumes a feature. Note that Impact does not support domain separation.</li>
+<li><strong>Measurable outcome.</strong> No late-stage design rework caused by an entitlement or environment constraint.</li>
+</ul>
+<h3 id="4-11-consumption-and-entitlement-governance">4.11 Consumption and entitlement governance</h3>
+<ul>
+<li><strong>Problem.</strong> The organisation pays for Impact but cannot show what was consumed, so the next renewal debate restarts from zero.</li>
+<li><strong>Capability.</strong> Consumption Report / <strong>Benefits &amp; Usage</strong>, Accelerator usage status, Developer Support usage, learning balance.</li>
+<li><strong>What the client does.</strong> Review the Consumption Report quarterly with the squad, target the specific under-used benefit (usually learning credits or Accelerator concurrency), and track it like any other KPI.</li>
+<li><strong>Measurable outcome.</strong> Higher utilisation of the entitlement, and an evidence-based position at renewal.</li>
+</ul>
+<h3 id="4-12-regulated-onboarding-manual-registration">4.12 Regulated onboarding: manual registration</h3>
+<ul>
+<li><strong>Problem.</strong> The organisation's security posture prevents automated cloud registration of instances to a ServiceNow-hosted service.</li>
+<li><strong>Capability.</strong> Manual (regulated) registration path, Service Bridge, connection verification.</li>
+<li><strong>What the client does.</strong> Use the mandated manual registration flow from the IDI, complete the validation steps, and confirm the connection reports <strong>Active replication</strong> inbound and outbound. Document which components move data for the security assessment.</li>
+<li><strong>Measurable outcome.</strong> A compliant, verified connection — necessary for almost every other Impact benefit. (Named contact administrator may differ from the registrant.)</li>
+</ul>
+<hr />
+<h2 id="5-business-benefits">5. Business benefits</h2>
+<h3 id="5-1-benefits-by-stakeholder">5.1 Benefits by stakeholder</h3>
+<table>
+<thead>
+<tr>
+<th>Stakeholder</th>
+<th>What they get from Impact</th>
+<th>Evidence they can point to</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>CIO / CDIO</strong></td>
+<td>Confidence that the platform is delivering the intended business outcomes; a defensible ROI position</td>
+<td>Value Reports, Outcome Insights trends, quarterly executive reviews</td>
+</tr>
+<tr>
+<td><strong>CFO / Finance</strong></td>
+<td>Visible return against existing spend; reduced shelf-ware; assumption-transparent monetisation</td>
+<td>Value Reports (with assumptions), Subscriptions/Capability Map, Consumption Report</td>
+</tr>
+<tr>
+<td><strong>CIO office / Strategy</strong></td>
+<td>Prioritised roadmap aligned to business objectives; recommendations converted into governed work</td>
+<td>Product Adoption Roadmaps, SPM/CWM work items, Accelerator outcomes</td>
+</tr>
+<tr>
+<td><strong>Platform Owner</strong></td>
+<td>Continuous visibility of platform health and performance; a defined cadence and an expert escalation path</td>
+<td>Health scores by category, Instance Observer alerts, Monthly Health Assessment, Tech KPIs</td>
+</tr>
+<tr>
+<td><strong>Platform Architect</strong></td>
+<td>Engineering-quality evidence for design decisions; leading-practice checks; upgrade readiness</td>
+<td>Scan findings, custom definitions/suites, Proactive Code Check, peer KPI comparison</td>
+</tr>
+<tr>
+<td><strong>ITSM / Service Operations Manager</strong></td>
+<td>Fewer user-reported incidents; faster resolution of the hard cases</td>
+<td>Instance Observer alert-to-resolution history, Developer Support outcomes, case trends</td>
+</tr>
+<tr>
+<td><strong>Developers / development teams</strong></td>
+<td>Specific, actionable findings instead of generic review comments; fast paths to fixes</td>
+<td>Team Lead / Development Team dashboards, AI code fix proposals, Jira/ADO integration</td>
+</tr>
+<tr>
+<td><strong>Security &amp; Risk</strong></td>
+<td>Documented data flows, consent controls and environment limitations; no unsanctioned egress</td>
+<td>Manage Permissions/consent records, data-egress component list, availability restrictions</td>
+</tr>
+<tr>
+<td><strong>Change / Release Manager</strong></td>
+<td>Lower change-failure risk and cleaner upgrades</td>
+<td>Real-Time Prevention, scan coverage, upgrade-readiness evidence</td>
+</tr>
+<tr>
+<td><strong>Learning &amp; Enablement</strong></td>
+<td>Purposeful training linked to outcomes, funded through credits</td>
+<td>Training Insights, contextual course recommendations, credit balance</td>
+</tr>
+<tr>
+<td><strong>Business unit leaders (HR, Finance, etc.)</strong></td>
+<td>Their own value story, in their language</td>
+<td>Stakeholder Groups, per-group objectives and reporting</td>
+</tr>
+</tbody>
+</table>
+<h3 id="5-2-benefits-by-category">5.2 Benefits by category</h3>
+<ol>
+<li><strong>Financial.</strong> Return on existing licence spend, avoidance of unnecessary re-purchase, and monetised value reporting that can be taken to the board.</li>
+<li><strong>Risk reduction.</strong> Technical debt measured continuously; upgrade and change risk found before production; performance degradation detected early.</li>
+<li><strong>Operational efficiency.</strong> Remediation routed into existing backlogs; fewer manual reviews; faster triage and root cause.</li>
+<li><strong>Adoption and enablement.</strong> Capability Maps and PARs turn entitlements into used capability; learning is linked to the outcome it improves.</li>
+<li><strong>Governance and assurance.</strong> A defined operating model (Foundations → Steady State) with monthly and quarterly reviews, and auditable artefacts in the Activity Center.</li>
+<li><strong>Decision quality.</strong> Recommendations with rationale, peer comparison for context, and expert validation from the squad.</li>
+<li><strong>Predictability.</strong> Managed upgrade readiness and a capacity-aware plan instead of an emergency response.</li>
+<li><strong>Scalability and continuity.</strong> Expert capacity without permanent headcount, and knowledge retained in the platform rather than in individuals.</li>
+</ol>
+<h3 id="5-3-benefit-realisation-discipline">5.3 Benefit-realisation discipline</h3>
+<p>Two disciplines decide whether the benefits above materialise:</p>
+<ul>
+<li><strong>Baseline early.</strong> Outcomes need a reference quarter to compare against, and Value Reports need at least two years of product data. Programs that start collecting late can only report late.</li>
+<li><strong>Implement what is not ServiceNow's responsibility.</strong> ServiceNow is explicitly not responsible for implementing or managing the Monthly Health Assessment, and Developer Support does not cover net-new implementations, nor customisations that break after a family upgrade. Budget internal ownership for those.</li>
+</ul>
+<hr />
+<h2 id="6-impact-versus-traditional-support">6. Impact versus traditional support</h2>
+<table>
+<thead>
+<tr>
+<th>Dimension</th>
+<th>Traditional reactive support</th>
+<th>ServiceNow Impact</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Trigger</strong></td>
+<td>A case is raised after something breaks</td>
+<td>Continuous instrumentation: scans, telemetry, value data — problems surface before impact</td>
+</tr>
+<tr>
+<td><strong>Scope</strong></td>
+<td>Break-fix of ServiceNow base functionality</td>
+<td>Break-fix <strong>plus</strong> platform health, performance, adoption, value realisation, upgrade readiness</td>
+</tr>
+<tr>
+<td><strong>Deliverable</strong></td>
+<td>Fix, workaround, known error</td>
+<td>Artefacts: health assessments, roadmaps, monetised value reports, remediation plans, expert-led Accelerators</td>
+</tr>
+<tr>
+<td><strong>Expert access</strong></td>
+<td>Support agents via the Now Support portal</td>
+<td>Named Impact Squad (CSM/CSE/Platform Architect/SAM), plus <strong>Developer Support</strong> engineers for customisations</td>
+</tr>
+<tr>
+<td><strong>Customisation help</strong></td>
+<td>Limited</td>
+<td>Developer Support for existing customisations (package-dependent; excludes net-new implementations)</td>
+</tr>
+<tr>
+<td><strong>Learning</strong></td>
+<td>Self-serve documentation</td>
+<td>Funded learning credits plus contextual recommendations tied to under-performing outcomes</td>
+</tr>
+<tr>
+<td><strong>Cadence</strong></td>
+<td>Ad hoc, incident-driven</td>
+<td>Monthly operational and health reviews; quarterly outcome, support and executive reviews</td>
+</tr>
+<tr>
+<td><strong>Success measure</strong></td>
+<td>SLA adherence, time to close</td>
+<td>Business outcomes achieved, value realised, health trend, adoption, upgrade readiness</td>
+</tr>
+<tr>
+<td><strong>Commercial model</strong></td>
+<td>Included with product support entitlements</td>
+<td>Subscription packages (Guided / Total / Integrated Success) + Add-on SKUs + Accelerator concurrency</td>
+</tr>
+<tr>
+<td><strong>AI assistance</strong></td>
+<td>Emerging</td>
+<td>GenAI consumption-report summarisation, AI code fixes, GenAI-assisted root-cause analysis (Now Assist / ServiceNow Otto)</td>
+</tr>
+<tr>
+<td><strong>Typical first question</strong></td>
+<td>"What is the incident number?"</td>
+<td>"Which outcome is at risk, and what do we do next?"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>How they coexist in practice:</strong></p>
+<ul>
+<li><strong>Now Support remains the home of incident management.</strong> Impact adds enhanced <strong>P1/P2 response targets</strong> (documented as 30/120 minutes for Guided and 15/60 minutes for Total — verify against your entitlement) and adds Developer Support and proactive engagement on top. It does not replace case handling.</li>
+<li><strong>Impact's evidence feeds support.</strong> A health finding or Instance Observer alert often becomes the reason a case is raised with better context than user-reported symptoms would produce.</li>
+<li><strong>The value narrative belongs to Impact.</strong> Support can tell you the platform is healthy today; Impact tells you whether the platform is delivering what the business paid for.</li>
+</ul>
+<h2 id="gt-what-impact-does-not-do-it-does-not-remove-the-need-for-platform-ad">&gt; <strong>What Impact does not do.</strong> It does not remove the need for platform administrators, a change/release process, data governance, or an implementation partner for net-new work. Treat it as the measurement, guidance and expert-capacity layer wrapped around your existing operating model.</h2>
+<h2 id="7-prerequisites">7. Prerequisites</h2>
+<p>Work through this section <strong>before</strong> procuring the application. Most failed or stalled Impact deployments stall on one of these items, not on the technology.</p>
+<h3 id="7-1-platform-and-release-prerequisites">7.1 Platform and release prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Prerequisite</th>
+<th>Detail</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Supported platform versions</strong></td>
+<td><strong>Yokohama</strong> and <strong>Xanadu Patch 2 and above</strong></td>
+<td>Install Impact</td>
+</tr>
+<tr>
+<td><strong>Entitlement application version</strong></td>
+<td>Impact Store Application ServiceNow entitlement (<strong><code>sn_entitlement</code></strong>) version <strong>4.1.2 or higher</strong></td>
+<td>Install Impact</td>
+</tr>
+<tr>
+<td><strong>Store availability for your release</strong></td>
+<td>Review the Impact main application listing in the ServiceNow Store for dependencies, licensing/subscription requirements and release compatibility for the Australia release</td>
+<td>Install Impact</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Verify before committing:</strong> the documented supported versions above are the authoritative statement in the Australia docs. Always confirm the live ServiceNow Store listing for the exact version your instance runs — dependency and compatibility data in the Store is updated more frequently than the docs.</p>
+</blockquote>
+<h3 id="7-2-licensing-and-entitlement-prerequisites">7.2 Licensing and entitlement prerequisites</h3>
+<ul>
+<li><strong>Confirm your Impact package</strong> — <strong>Guided</strong>, <strong>Total</strong> or <strong>Integrated Success</strong> — and read the entitlement table in Appendix A. The differences are material: custom scan definitions, Instance Observer seats/look-back/alert counts, Accelerator concurrency, Developer Support seats, and access to Value Reports and analytics all vary by package.</li>
+<li><strong>Confirm Add-ons</strong> separately (for example <strong>Strategic Value</strong>, <strong>Platform Governance</strong>, <strong>Platform Optimization</strong>, <strong>Managed Support</strong>). Add-ons change concurrency and support scope.</li>
+<li><strong>Check the P1/P2 response targets</strong> applicable to your package (documented as 30/120 minutes for Guided and 15/60 minutes for Total — verify against your entitlement).</li>
+<li><strong>Confirm the purchase path:</strong> if Impact does not appear in the Store, contact your Impact Squad for assistance on procuring the Impact Store Application.</li>
+<li><strong>Know the consumption model:</strong> Accelerators are consumed against <strong>concurrency</strong> entitlements, and scheduling is subject to <strong>resource availability</strong> — plan engagements in advance.</li>
+</ul>
+<h3 id="7-3-people-roles-and-accountability-prerequisites">7.3 People, roles and accountability prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Prerequisite</th>
+<th>Why it is needed</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>A named contact administrator</strong></td>
+<td>Must be allocated as the contact to perform the installation/implementation and <strong>receive the registration email</strong>. This person may differ from the person who registered the entitlement.</td>
+</tr>
+<tr>
+<td><strong>Platform Owner</strong></td>
+<td>Required for Monthly Health Assessment and general platform accountability.</td>
+</tr>
+<tr>
+<td><strong>Impact Administrator / Impact App Admin</strong></td>
+<td>User and role administration, Guided Setup execution.</td>
+</tr>
+<tr>
+<td><strong>Scan Engine Admin (<code>sn_se.scan_engine_admin</code>)</strong></td>
+<td>Instance registration, connection validation, scan configuration.</td>
+</tr>
+<tr>
+<td><strong>Scan Engine User (<code>sn_se.scan_engine_user</code>)</strong></td>
+<td>Day-to-day scan consumption.</td>
+</tr>
+<tr>
+<td><strong>Development Team Leads</strong></td>
+<td>Registered so scan findings route to the right team; maintained under Scan Engine Properties.</td>
+</tr>
+<tr>
+<td><strong>IDI administrators</strong></td>
+<td>IDI-side user/role administration and registrations.</td>
+</tr>
+<tr>
+<td><strong>Permissions Authorizer</strong></td>
+<td>Consent and permissions approvals (including user-experience monitoring terms).</td>
+</tr>
+<tr>
+<td><strong>Developer Support named individuals</strong></td>
+<td>Only named individuals may raise Developer Support cases.</td>
+</tr>
+<tr>
+<td><strong>Security / risk reviewer</strong></td>
+<td>Needed for the data-egress assessment (see 7.5).</td>
+</tr>
+<tr>
+<td><strong>Executive sponsor</strong></td>
+<td>Owns the objectives and outcomes; attends quarterly reviews.</td>
+</tr>
+</tbody>
+</table>
+<p>The full role catalogue is in <strong>Appendix C</strong>.</p>
+<h3 id="7-4-access-consent-and-governance-prerequisites">7.4 Access, consent and governance prerequisites</h3>
+<ul>
+<li><strong>Impact Squad access approval.</strong> Squad access to your instance is <strong>read-only, time-boxed (30 days) and revocable</strong>, and re-approval is expected <strong>quarterly</strong>. Line up approval as part of onboarding, not after it.</li>
+<li><strong>Data-collection consent.</strong> Consent gates apply to specific capabilities: <strong>user-experience monitoring</strong> requires an admin to review and accept Terms &amp; Conditions via <strong>Manage Permissions</strong> in IDI (user IDs are anonymised by default, with an opt-in for non-anonymised collection); the <strong>Monthly Health Assessment</strong> prompts for consent when scheduling; additional requirement tracking uses <strong>Manage Permissions</strong> (<code>grant-ide-permissions.md</code>).</li>
+<li><strong>Governance cadence agreement.</strong> Agree who attends the monthly operational/health review and the quarterly outcome, support and executive reviews, and who owns follow-through.</li>
+<li><strong>Domain separation acknowledgement.</strong> Impact <strong>does not support domain separation</strong> — record this as an accepted design constraint.</li>
+<li><strong>Environment-availability acknowledgement.</strong> Portions of Impact may not be available in FedRAMP, NSC DOD IL5, or Australia IRAP-Protected data centres, to self-hosted users, to other restricted environments, or to managed service providers (except internal use).</li>
+</ul>
+<h3 id="7-5-infrastructure-network-and-security-prerequisites">7.5 Infrastructure, network and security prerequisites</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Integration user</strong></td>
+<td>A dedicated integration user is required for instance-to-instance integration (<code>task-create-integration-user.md</code>).</td>
+</tr>
+<tr>
+<td><strong>Authentication method</strong></td>
+<td>Choose <strong>OAuth 2.0</strong> (preferred) or <strong>Basic</strong>. OAuth configuration differs for production vs development instances (<code>configure-oauth-auth-method-prod.md</code>, <code>configure-oauth-auth-method.md</code>, <code>configure-basic-auth-method.md</code>).</td>
+</tr>
+<tr>
+<td><strong>Key Management access policies</strong></td>
+<td>Required when troubleshooting validation failures (<strong>All → Key Management → Module Access Policies</strong>).</td>
+</tr>
+<tr>
+<td><strong>Network egress allow-listing</strong></td>
+<td>Confirm outbound access from your instance to the ServiceNow-hosted Impact Delivery Instance (<code>impact.service-now.com</code>) and the Store.</td>
+</tr>
+<tr>
+<td><strong>Data-egress assessment</strong></td>
+<td>Document the components that move data off-instance: the <strong>Service Bridge</strong> stack, <strong>Cloud Storage</strong>, <strong>Licensing Engine</strong>, and the <strong>MIF Customer Instance</strong>. <strong>Impact Common, Impact Content and Impact Health do not move data.</strong></td>
+</tr>
+<tr>
+<td><strong>Webhook destination</strong></td>
+<td>If you want Instance Observer alert notifications pushed into your own tooling, provide the webhook endpoint (customer-configured or third-party).</td>
+</tr>
+<tr>
+<td><strong>Storage headroom</strong></td>
+<td>Plan for Impact storage growth — <strong>attachments are the biggest driver</strong>, and the IDI connection adds additional consumption (see <code>impact-store-app-storage-estimation.md</code>).</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-6-data-and-configuration-prerequisites">7.6 Data and configuration prerequisites</h3>
+<ul>
+<li><strong>Instance inventory.</strong> For each participating instance, capture the exact <strong>instance name</strong> (which must match the <code>instance_name</code> system property, typically the subdomain) and the full <strong>instance URL</strong> in the format <code>https://instancename.service-now.com</code> — no <code>www.</code>, no trailing slash, no path.</li>
+<li><strong>Environment designation.</strong> Classify each instance as <strong>Development</strong>, <strong>Production</strong> or <strong>Test</strong>. <strong>Only one instance in your stack may be designated Production.</strong></li>
+<li><strong>Registration order.</strong> Register each participating instance in <strong>My SN Instances</strong> <em>before</em> configuring any instance-to-instance integration.</li>
+<li><strong>Subscriptions/entitlement data.</strong> Required for Capability Maps and the Subscriptions view (Licensing Engine).</li>
+<li><strong>Scan scope decision.</strong> Decide which instances are scanned, and whether the first scan runs against production (recommended overnight) or a lower environment first.</li>
+<li><strong>Team structure decision.</strong> Agree the development-team model so findings route correctly; scan groups and team leads are configured up front.</li>
+</ul>
+<h3 id="7-7-ai-prerequisites-only-if-ai-code-fix-is-in-scope">7.7 AI prerequisites (only if AI code fix is in scope)</h3>
+<table>
+<thead>
+<tr>
+<th>Prerequisite</th>
+<th>Detail</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Now Assist for Impact</strong></td>
+<td>Version <strong>3.03 or later</strong></td>
+</tr>
+<tr>
+<td><strong>Now Assist for Platform</strong></td>
+<td>Version <strong>11.01 or later</strong></td>
+</tr>
+<tr>
+<td><strong>Skill activation</strong></td>
+<td>Activate the skill in Now Assist for Impact: <strong>All → Now Assist for Setup → Skills → Impact → Code Fix → Activate skill</strong></td>
+</tr>
+<tr>
+<td><strong>System property</strong></td>
+<td><strong><code>sn_impact_gen_ai.ai_fix.enabled = true</code></strong> (default is <code>false</code>)</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td><strong><code>sn_impact_gen_ai.ai_fix_user</code></strong></td>
+</tr>
+<tr>
+<td><strong>Real-time validation setting</strong></td>
+<td>If real-time validation is in scope: <strong>Scan Engine Properties → Real Time Scanning → Enforce real-time validation = true</strong></td>
+</tr>
+<tr>
+<td><strong>Environment</strong></td>
+<td>Now Assist prerequisites also apply (Now Assist Admin role, Now Assist entitlement)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="7-8-customer-and-organisation-setup-prerequisites">7.8 Customer and organisation setup prerequisites</h3>
+<ul>
+<li><strong>Accountability:</strong> name a <strong>Platform Owner</strong> and an <strong>Impact Administrator</strong>.</li>
+<li><strong>Stakeholder model:</strong> decide whether to use <strong>Stakeholder Groups (Group Views)</strong> for business-unit-specific objectives and reporting. Group Views requires squad enablement and is documented as initially available to limited customers; a group cannot span multiple accounts.</li>
+<li><strong>Instance inventory:</strong> decide which instances are onboarded, which is Production, and which require Scan Engine integration.</li>
+<li><strong>Approvals:</strong> line up squad access approval and any consent-based data collection approvals at the same time as the security review, so onboarding is not delayed.</li>
+<li><strong>Named contacts:</strong> Developer Support named individuals (per entitlement) and escalation contacts for Priority 1 incidents.</li>
+<li><strong>Governance:</strong> agree the review cadence (monthly/quarterly) and who attends the Quarterly Impact Review Executive Briefing.</li>
+</ul>
+<h3 id="7-9-servicenow-support-and-services-prerequisites">7.9 ServiceNow support and services prerequisites</h3>
+<ul>
+<li>An active <strong>Impact Squad</strong> engagement: the CSM is your primary point of contact and orchestrates onboarding (Impact Kickoff Meeting) and Foundations delivery.</li>
+<li>For <strong>Total</strong> (or Guided with Add-ons): <strong>Platform Architect</strong>, <strong>Customer Success Executive</strong> and <strong>Support Account Manager</strong> coverage as per your agreement.</li>
+<li><strong>Accelerator scheduling depends on resource availability</strong> — plan engagements in advance and respect concurrency limits.</li>
+<li><strong>ServiceNow is not responsible for implementation or management of the Monthly Health Assessment</strong>; your squad can assist with instance switching and cancellation.</li>
+<li>Confirm exclusions up front: <strong>Developer Support does not cover new implementations or customisations that break after a family upgrade</strong> — raise those with Now Support.</li>
+</ul>
+<h3 id="7-10-pre-implementation-checklist">7.10 Pre-implementation checklist</h3>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Item</th>
+<th>Owner</th>
+<th>Done</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Impact package and Add-ons confirmed; entitlements visible in the instance</td>
+<td>Procurement / Platform Owner</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Named contact administrator allocated and available for the registration email</td>
+<td>Platform Owner</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Store application procured and visible in <strong>All → Application Manager</strong></td>
+<td>Admin</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Target instances listed with environment type, name and URL verified</td>
+<td>Architect</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Role-to-persona matrix agreed; Impact groups and development teams drafted</td>
+<td>Platform Owner / Security</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Security review of dependent apps and data egress completed</td>
+<td>Security</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Domain-separation limitation acknowledged</td>
+<td>Architect</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>8</td>
+<td>Impact Squad access approved (read-only, 30 days, quarterly re-approval)</td>
+<td>Security / Platform Owner</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>9</td>
+<td>Consent decisions agreed for user-experience monitoring and health-assessment scanning</td>
+<td>Permissions Authorizer</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>10</td>
+<td>Integration user created and authentication method chosen (OAuth 2.0 preferred)</td>
+<td>Admin</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>11</td>
+<td>Cutover window agreed for the first full scan (run overnight; may take hours)</td>
+<td>Platform Owner</td>
+<td>[ ]</td>
+</tr>
+<tr>
+<td>12</td>
+<td>Storage and platform capacity reviewed, including attachment growth</td>
+<td>Architect</td>
+<td>[ ]</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="8-installation-and-activation-the-sequence">8. Installation and activation — the sequence</h2>
+<p>This is the end-to-end flow with the exact navigation paths documented in the Australia release. <strong>Each Guided Setup section must be marked complete to unlock the next</strong>; you may return to incomplete steps later.</p>
+<blockquote>
+<p><strong>Golden rule:</strong> mark each Guided Setup step as complete only when the underlying task genuinely succeeded. Steps lock sequentially, so a step marked complete prematurely hides a failure until much later in the sequence.</p>
+</blockquote>
+<h3 id="step-1-procure-the-impact-store-application">Step 1 — Procure the Impact Store Application</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Acquire the entitlement so the application becomes installable in your instance</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>ServiceNow Store → <strong>Apps and Solutions</strong> (Explore menu) → search <strong>Impact</strong> → <strong>Buy</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>Any Impact role, admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>If the application is not visible, contact your Impact Squad for assistance on procuring the Impact Store Application</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-2-install-the-application">Step 2 — Install the application</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Install the Impact Store Application and its dependent applications</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Your instance → <strong>All → Application Manager</strong> → search <strong>Impact</strong> → <strong>Install</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>If Impact does not appear, use <strong>Sync now</strong> to refresh the sync with the ServiceNow Store. Dependent applications (Impact Common, Impact Content, Impact Health and others) install with it — see <code>data-sync-idi-store.md</code> for the tables involved</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-3-open-guided-setup">Step 3 — Open Guided Setup</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Enter the ordered configuration workflow</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>Application Manager → Configure</strong>, or <strong>All → Impact → Guided Setup → Get Started</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin, admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>The overview page shows the setup process and a pre-checklist. Steps are grouped by category; expand a category to see its tasks</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-4-onboard-users-to-the-impact-store-application">Step 4 — Onboard users to the Impact Store Application</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Create/assign Impact users so the workspace is populated and personalised</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>All → Impact → Configuration → Guided Setup → User management</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Onboard both new and existing users. User management covers tenants, users, groups and roles — plan the role-to-persona mapping first (Appendix C)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-5-assign-platform-health-users-and-set-up-development-teams">Step 5 — Assign Platform Health users and set up development teams</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Give Platform Health/Scan Engine users the group membership the feature requires, and register the development teams that own findings</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>All → Impact → Guided Setup → Assign Platform Health users</strong>; then <strong>All → Impact → Configuration → Scan Engine Properties</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin or admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Beyond Impact user groups, <strong>Platform Health users must also belong to a Scan Engine group</strong>. Development teams are created under <strong>Scan Engine Properties → Team Leads → New</strong> so that findings route to an accountable team</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-6-activate-scan-engine-and-review-settings">Step 6 — Activate Scan Engine and review settings</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Enable the scanning engine and grant it the table access it needs</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>All → Impact → Guided Setup → Impact Platform Health → Activate Scan Engine &amp; review settings</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin or admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>When the Scan Engine error banner appears, select the <strong><code>sys_update_version</code></strong> link to open the Tables page → <strong>Application Access</strong> tab → select <strong>Can read</strong> → <strong>Update</strong>. Then continue to configure properties in the next step. <strong>Scan Engine findings are not transmitted to the Impact Delivery Instance</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-7-configure-scan-engine-properties">Step 7 — Configure Scan Engine properties</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Set the minimum required configuration to run the first system scan, and tune scanning behaviour</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>All → Impact → Configuration → Scan Engine Properties</strong> (see also <strong>Scan Engine Properties → Real Time Scanning</strong>)</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin / scan engine admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Related configuration areas documented in the Australia release include application scanning properties, real-time scanning properties, update-set scanning properties, team development scanning properties, exception reasons (properties + integration + syncing), additional scan engine properties, and working policies. Set <strong>Enforce real-time validation</strong> here if real-time prevention is in scope</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-8-optional-configure-ai-code-fix">Step 8 — (Optional) Configure AI code fix</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Enable GenAI-assisted remediation of findings</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>Scan Engine Properties → Real Time Scanning → Enforce real-time validation = true</strong>; <strong>All → Now Assist for Setup → Skills → Impact → Code Fix → Activate skill</strong>; set <strong><code>sn_impact_gen_ai.ai_fix.enabled = true</code></strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>scan engine admin / Now Assist admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Requires Now Assist for Impact 3.03+, Now Assist for Platform 11.01+, entitlement and activation. Grant the <strong><code>sn_impact_gen_ai.ai_fix_user</code></strong> role to the people who will review proposed fixes. Batch remediation with AI is also documented (<code>batch-remediation-with-ai.md</code>)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-9-run-the-first-full-scan">Step 9 — Run the first full scan</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Establish the health baseline. An initial full Scan Engine completion is required before subsequent scans perform efficiently</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>All → Impact → Platform Health → Scheduled Scan</strong> → <strong>Execute Now</strong>; monitor progress at <strong>All → Impact → Platform Health → Scan Engine → Scan Status</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin or admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td><strong>Depending on instance size, the first scan can take a few hours — ServiceNow suggests running it overnight, especially in production.</strong> Findings stay in your instance</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-10-register-your-instances-in-my-sn-instances">Step 10 — Register your instances in My SN Instances</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Register each participating instance before configuring any instance-to-instance integration</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>ALL → Impact → Configuration → Scan Engine Properties</strong> → <strong>My SN Instances</strong> related list → <strong>New</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td><code>sn_se.scan_engine_admin</code></td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td><strong>Instance Name</strong> must match the <code>instance_name</code> system property. <strong>Instance URL</strong> must be exactly <code>https://instancename.service-now.com</code> (omit <code>www.</code>, trailing slashes and any path). <strong>Environment</strong> must be Development, Production or Test — <strong>only one instance may be designated Production</strong>. Also select the <strong>Authentication Type</strong> (OAuth 2.0 preferred, or Basic)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-11-configure-the-authentication-method">Step 11 — Configure the authentication method</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Give the integration user a working credential to the destination instance</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Per the authentication guide chosen: OAuth 2.0 (production or development instance variants) or Basic</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>admin / scan engine admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td><strong>OAuth 2.0 is preferred over Basic authentication.</strong> Configuration differs between production and development instances — use the correct guide. An integration user must exist first</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-12-validate-the-instance-connection">Step 12 — Validate the instance connection</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Prove the credential works before proceeding</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>ALL → Impact → Configuration → Scan Engine Properties → My SN Instances</strong> → open the instance record → <strong>Validate Connection</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td><code>sn_se.scan_engine_admin</code></td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Success shows <strong>Connection Status = <code>Connection valid</code></strong>. On failure, resolve the root cause <strong>before</strong> retrying: repeated failed validation attempts trigger the <strong>account lockout policy</strong>. Work the documented checks in order (including <strong>All → Key Management → Module Access Policies</strong>) and see the lockout recovery procedure if the account is already locked</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-13-automated-registration-to-the-impact-delivery-instance-preferr">Step 13 — Automated registration to the Impact Delivery Instance (preferred)</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Connect the Impact Store Application to the IDI and begin data flow</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>All → Impact → Configuration → Guided Setup → Register your instance</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin and impact admin (IDI)</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Automated registration is the recommended path. The named contact administrator receives the registration email</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-14-manual-registration-regulated-gcc-environments">Step 14 — Manual registration (regulated / GCC environments)</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Register instances where automated cloud registration is not permitted</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Manual registration flow from the IDI: <strong>Activity Center → Instance registration → Add instance</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>admin, any Impact role (plus IDI-side administration)</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Manual registration is generally used by advanced users, to obtain configuration support from the Impact Squad, and is <strong>required for Regulated and GCC customers</strong>. Registration states you will observe: <strong>Pending → Awaiting validation → Validated</strong>, or <strong>Validation failed</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-15-verify-the-impact-data-connection">Step 15 — Verify the Impact data connection</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Confirm the connection is genuinely healthy in both directions</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Guided Setup → <strong>Verify the Connection</strong> step (progress tracking)</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Success is <strong>Inbound and Outbound both showing <code>Active replication</code></strong>. If the connection does not come up, use the Service Exchange Health Dashboard link provided in the flow; if that does not resolve it, contact your CSM</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-16-initiate-sync-and-data-migration-from-idi">Step 16 — Initiate sync and data migration from IDI</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Move squad-created artefacts and configuration data into your instance</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td><strong>All → Impact → Configuration → Guided Setup → Initiate sync &amp; migration</strong> → <strong>Initiate migration → Start Data Migration</strong></td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact app admin, admin</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Review the <strong>Impact Data Migration Overviews</strong> table for per-table status. If a table shows an issue or you need to re-run, use the documented <strong>Re-migrate Data</strong> option. Expect storage consumption to increase as data lands</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-17-approve-impact-squad-access">Step 17 — Approve Impact Squad access</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Let your named ServiceNow experts see the instance evidence they need</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Per the squad-access procedure (<code>hop-access-impact-squad.md</code>)</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>Security / Platform Owner (approver)</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Access is <strong>read-only</strong>, <strong>time-boxed (30 days)</strong> and <strong>revocable</strong>; expect <strong>quarterly re-approval</strong>. Approval is a prerequisite for meaningful squad engagement</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-18-enable-the-value-and-remaining-capability-layers">Step 18 — Enable the value and remaining capability layers</h3>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Purpose</strong></td>
+<td>Turn the technical connection into business outcomes</td>
+</tr>
+<tr>
+<td><strong>Navigation</strong></td>
+<td>Objectives and outcomes: IDI (<strong>Impact</strong> areas / <code>objectives-and-outcomes-in-impact-delivery-instance.md</code>) and the Impact Store Application; data collection jobs per product (<code>dc-*-install.md</code>, <code>dc-*-activate.md</code>, <code>dc-*-config.md</code>); Instance Observer configuration; Now Assist skills as required</td>
+</tr>
+<tr>
+<td><strong>Role</strong></td>
+<td>impact admin / platform owner (plus product owners for data collection)</td>
+</tr>
+<tr>
+<td><strong>Notes</strong></td>
+<td>Data collection packs exist per product (ITSM, ITOM, CSM, HRSD, IRM, SAM, HAM, APM, App Engine, SecOps, SPM). Jobs must be <strong>enabled</strong> — installation alone does not collect data. Agree objectives and outcomes early: <strong>Value Reports need at least two years of product data</strong> to be meaningful</td>
+</tr>
+</tbody>
+</table>
+<h3 id="troubleshooting-the-activation-sequence">Troubleshooting the activation sequence</h3>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>What to do</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Application not visible in the Store or Application Manager</strong></td>
+<td>Use <strong>Sync now</strong> in Application Manager to refresh the Store sync; if still missing, contact your Impact Squad for procurement assistance</td>
+</tr>
+<tr>
+<td><strong>Scan Engine blocked by a table-access error</strong></td>
+<td>Follow the Guided Setup prompt to the <code>sys_update_version</code> table → <strong>Application Access</strong> → <strong>Can read</strong> → <strong>Update</strong></td>
+</tr>
+<tr>
+<td><strong>Connection validation fails</strong></td>
+<td>Resolve the root cause before retrying — repeated failures trigger account lockout. Check authentication method, integration user status, Key Management module access policies, and that the URL and instance name exactly match the documented format</td>
+</tr>
+<tr>
+<td><strong>Integration user account locked out</strong></td>
+<td>Unlock the integration user and clear the password reset flag. Both fields must be cleared — <code>locked_out</code> <strong>and</strong> <code>password_needs_reset</code>; clearing only one is insufficient (use a background script per the recovery procedure)</td>
+</tr>
+<tr>
+<td><strong>Connection never reaches Active replication</strong></td>
+<td>Use the Service Exchange Health Dashboard link in the verification step; escalate to your CSM if it persists</td>
+</tr>
+<tr>
+<td><strong>First scan seems to hang</strong></td>
+<td>A first full scan legitimately takes hours on large instances; monitor <strong>Scan Status</strong> rather than re-triggering</td>
+</tr>
+<tr>
+<td><strong>Guided Setup step is locked</strong></td>
+<td>Previous section not marked complete — steps unlock sequentially</td>
+</tr>
+<tr>
+<td><strong>Storage consumption rising quickly</strong></td>
+<td>Expected: attachments dominate Impact storage growth, and the IDI connection adds migration volume. Review retention</td>
+</tr>
+<tr>
+<td><strong>KMF request awaiting approval</strong></td>
+<td>Approve it in the KMF workflow, then sign out and back in so the role takes effect</td>
+</tr>
+</tbody>
+</table>
+<h3 id="verify-before-you-commit-a-caution-list">Verify before you commit — a caution list</h3>
+<p>The following points are either entitlement-dependent or differ between ServiceNow topics. Confirm each with your Impact Squad or the live contract before you build a plan on it:</p>
+<ol>
+<li><strong>Package deltas</strong> (Appendix A) — custom definition limits, Instance Observer seats/look-back/alerts, Accelerator concurrency, Developer Support seats, Value Report access.</li>
+<li><strong>P1/P2 response targets</strong> by package (30/120 vs 15/60 minutes).</li>
+<li><strong>Proactive Code Check</strong> status — documented as deprecating from Impact Zurich 6.0.8.</li>
+<li><strong>Group Views availability</strong> — documented as initially available to limited customers.</li>
+<li><strong>On-demand Accelerators</strong> — documented as not available to Guided; confirm for your package.</li>
+<li><strong>Restricted-environment availability</strong> — especially for Australian IRAP-Protected estates.</li>
+<li><strong>AI capabilities</strong> — Now Assist for Impact / ServiceNow Otto skill availability and entitlements.</li>
+</ol>
+<hr />
+<h2 id="9-from-activation-to-value-the-first-90-days-and-steady-state">9. From activation to value — the first 90 days and steady state</h2>
+<h3 id="9-1-foundations-phase-roughly-the-first-90-120-days">9.1 Foundations phase (roughly the first 90–120 days)</h3>
+<p>Foundations is the establishment phase. Its purpose is to get the loop running end to end — connection, data, baselines, ownership — and then produce the first credible health and value read-out.</p>
+<table>
+<thead>
+<tr>
+<th>Weeks</th>
+<th>Focus</th>
+<th>Concrete deliverables</th>
+<th>Owner</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Week 0</strong></td>
+<td>Kickoff and alignment</td>
+<td>Impact Kickoff Meeting held; success criteria for the program agreed; named contact administrator, Platform Owner and Impact Admin confirmed; squad access approved</td>
+<td>Executive sponsor + CSM</td>
+</tr>
+<tr>
+<td><strong>Weeks 1–2</strong></td>
+<td>Technical enablement</td>
+<td>Application procured and installed; Guided Setup started; users onboarded and roles assigned; Platform Health users placed in Scan Engine groups; development teams and team leads created</td>
+<td>Platform Owner / Impact App Admin</td>
+</tr>
+<tr>
+<td><strong>Weeks 2–3</strong></td>
+<td>Baseline the platform</td>
+<td>Scan Engine activated (<code>sys_update_version</code> <strong>Can read</strong> granted); properties configured; <strong>first full scan run overnight</strong>; findings triaged with the squad; remediation backlog created</td>
+<td>Scan Engine Admin / Development Team Leads</td>
+</tr>
+<tr>
+<td><strong>Weeks 2–4</strong></td>
+<td>Connect and migrate</td>
+<td>Instances registered in <strong>My SN Instances</strong>; authentication configured (OAuth 2.0 preferred); <strong>connection validated</strong>; registration completed (automated, or manual for regulated/GCC); connection shows <strong>Active replication</strong>; <strong>Initiate sync &amp; migration → Start Data Migration</strong> executed; per-table migration overviews reviewed</td>
+<td>Scan Engine Admin / Impact App Admin</td>
+</tr>
+<tr>
+<td><strong>Weeks 3–6</strong></td>
+<td>Agree the value story</td>
+<td>Business objectives agreed with the executive sponsor; each linked to measurable outcomes with a <strong>success metric, reference quarter and goal</strong>; relevant data-collection packs installed and <strong>jobs enabled</strong> per product</td>
+<td>Executive sponsor / Platform Owner</td>
+</tr>
+<tr>
+<td><strong>Weeks 4–8</strong></td>
+<td>Plan the work</td>
+<td>Capability Map reviewed per instance; <strong>Product Adoption Roadmap</strong> drafted and published; top recommendations accepted or converted into SPM/CWM work items; first Accelerators requested within concurrency limits</td>
+<td>Platform Owner / CSM</td>
+</tr>
+<tr>
+<td><strong>Weeks 6–10</strong></td>
+<td>Extend observability</td>
+<td>Instance Observer enabled for in-scope instances; alert thresholds tuned; webhook notifications routed into existing on-call channels; consent captured for user-experience monitoring if in scope</td>
+<td>Platform Owner / Permissions Authorizer</td>
+</tr>
+<tr>
+<td><strong>Weeks 8–12</strong></td>
+<td>First value read-out</td>
+<td>First Monthly Health Assessment reviewed; health score movement by category analysed; first Outcome Insights trends reviewed; learning credits allocated against under-performing outcomes</td>
+<td>Platform Owner + CSM</td>
+</tr>
+<tr>
+<td><strong>Week 12</strong></td>
+<td>Foundations review</td>
+<td>Foundations exit review: what is running, what is not, what is blocked; Steady State calendar agreed and published</td>
+<td>Executive sponsor + CSM</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Foundations exit criteria — the program is ready for Steady State when:</strong></p>
+<ol>
+<li>Connection is verified and both inbound and outbound show <strong>Active replication</strong>.</li>
+<li>A full scan has completed and findings have named owners in a governed backlog.</li>
+<li>Objectives and outcomes exist with baselines and targets, and data collection is running.</li>
+<li>A published Product Adoption Roadmap sequences the next two to four quarters of capability work.</li>
+<li>Squad access is approved and the monthly/quarterly review calendar is in diaries.</li>
+</ol>
+<h3 id="9-2-steady-state-phase-after-foundations">9.2 Steady State phase (after Foundations)</h3>
+<p>Steady State is a repeating cadence, not a project phase.</p>
+<table>
+<thead>
+<tr>
+<th>Cadence</th>
+<th>Forum</th>
+<th>Inputs</th>
+<th>Outputs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Monthly</strong></td>
+<td>Operational and health review (Platform Owner + CSM + team leads)</td>
+<td>New scan findings, health score movement by category, Instance Observer alerts and incidents, remediation backlog status</td>
+<td>Prioritised remediation actions, owners and dates; escalations to the squad</td>
+</tr>
+<tr>
+<td><strong>Monthly</strong></td>
+<td>Health assessment review</td>
+<td>Monthly Health Assessment output (report delivery is typically around <strong>two weeks</strong> after the assessment)</td>
+<td>Accepted recommendations, next month's focus, instance switching/cancellation decisions</td>
+</tr>
+<tr>
+<td><strong>Quarterly</strong></td>
+<td>Outcome review (business stakeholders + CSM)</td>
+<td>Outcome Insights against benchmark and goal; adoption status per capability; roadmap progress</td>
+<td>Roadmap adjustments, new or retired outcomes, Accelerator re-planning within concurrency limits</td>
+</tr>
+<tr>
+<td><strong>Quarterly</strong></td>
+<td>Support and executive review</td>
+<td>Case trends by priority (P1–P4), Developer Support usage, Accelerator consumption, learning credit balance</td>
+<td>Value narrative update, investment decisions, next-quarter executive briefing</td>
+</tr>
+<tr>
+<td><strong>Quarterly</strong></td>
+<td>Governance hygiene</td>
+<td>Squad access re-approval (read-only, 30 days, revocable)</td>
+<td>Renewed or revoked access</td>
+</tr>
+<tr>
+<td><strong>Annually</strong></td>
+<td>Value realisation</td>
+<td>Value Reports (monetised, with assumptions), Consumption Report / Benefits &amp; Usage</td>
+<td>Renewal position, package right-sizing, next-year objectives</td>
+</tr>
+</tbody>
+</table>
+<h3 id="9-3-governance-recommendations-for-the-client">9.3 Governance recommendations for the client</h3>
+<ul>
+<li><strong>Give one person accountability.</strong> A named Platform Owner with decision rights over platform work is the single strongest predictor of whether Impact is used. Without it, findings accumulate unowned.</li>
+<li><strong>Treat recommendations as work, not reading.</strong> Route them into your existing backlog (SPM/CWM/Jira/ADO) during planning, not after. Track conversion rate from recommendation to work item.</li>
+<li><strong>Keep the value layer honest.</strong> Objectives should be business statements, not IT statements ("reduce cost to serve", not "complete the next upgrade"). Keep the assumption list attached to the Value Report; it is what makes it credible under finance scrutiny.</li>
+<li><strong>Protect the cadence.</strong> The monthly and quarterly reviews are the mechanism. Cancelling them for delivery pressure removes the benefit first and the pressure last.</li>
+<li><strong>Instrument before you promise.</strong> Baselines and metrics are cheap to start and impossible to backfill; Value Reports need at least two years of product data to be meaningful.</li>
+<li><strong>Watch consumption, not just delivery.</strong> Accelerator concurrency is finite and scheduling is subject to availability; learning credits expire. Consumption governance is a quarterly task.</li>
+<li><strong>Close the loop visibly.</strong> Every quarter, show the executive which recommendation became which delivered outcome. This is what sustains sponsorship.</li>
+</ul>
+<hr />
+<h2 id="10-terminology-clarifications-and-accuracy-caveats">10. Terminology clarifications and accuracy caveats</h2>
+<p>These points cause the most confusion in client conversations. They are documented here so that nobody builds a commitment on a misunderstood term.</p>
+<h3 id="10-1-naming-and-terminology">10.1 Naming and terminology</h3>
+<table>
+<thead>
+<tr>
+<th>Term</th>
+<th>Clarification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Impact Workspace → Impact</strong></td>
+<td>ServiceNow renamed "Impact Workspace" to simply <strong>Impact</strong> in the Washington DC release. Older material (including internal notes) may still say "Impact Workspace" to mean the Impact Store Application home page (<strong>All → Impact → Overview</strong>)</td>
+</tr>
+<tr>
+<td><strong>Now Assist → ServiceNow Otto</strong></td>
+<td>In the Australia release, Now Assist branding for this context is rebranded as <strong>ServiceNow Otto</strong>. The underlying capabilities (outcome summarisation, consumption-report summarisation, AI code fixes) are the same</td>
+</tr>
+<tr>
+<td><strong>Instance Observer / Instance Observatory</strong></td>
+<td>The documentation uses both names for the same feature (<code>platform-health-idi.md</code> uses "Instance Observatory")</td>
+</tr>
+<tr>
+<td><strong>Impact Store Application</strong></td>
+<td>The app installed <strong>in your instance</strong> — the consumer side. Do not confuse it with the <strong>ServiceNow Store</strong>, which is where you procure it</td>
+</tr>
+<tr>
+<td><strong>Impact Delivery Instance (IDI)</strong></td>
+<td>The <strong>ServiceNow-hosted provider instance</strong> where your squad works. Not something you install</td>
+</tr>
+<tr>
+<td><strong>Accelerator vs Initiative</strong></td>
+<td>An <strong>Accelerator</strong> is a single fixed-scope expert-led engagement; an <strong>Initiative</strong> is a larger program that sequences multiple Accelerators</td>
+</tr>
+<tr>
+<td><strong>"Success Plans"</strong></td>
+<td><strong>Not an Impact feature.</strong> Customer success plans belong to ServiceNow's separate Customer Success Management product (documented under <code>acct-lifecycle-events/*</code> as renamed CSM). Within Impact, the equivalent planning constructs are the <strong>Customer Impact Plan (CIP)</strong> described in the squad/operating-model topics, plus <strong>Product Adoption Roadmaps</strong> for capability sequencing. If a client asks for "Success Plans" by name, clarify which product they mean</td>
+</tr>
+<tr>
+<td><strong>"Benchmarking module"</strong></td>
+<td>There is <strong>no standalone benchmarking module</strong>. Benchmarking appears as (a) <strong>peer comparison</strong> in technical KPI reporting, (b) <strong>Metric / Benchmark / Goal / Trend</strong> chart lines with a reference quarter and goal in the Value Library, and (c) <strong>multi-instance comparison</strong> of KPI scores across your own instances. Program-level material also references <strong>industry benchmark comparisons</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-2-accuracy-caveats-and-entitlement-dependent-statements">10.2 Accuracy caveats and entitlement-dependent statements</h3>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Caveat</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Package deltas</strong></td>
+<td>Guided / Total entitlements differ materially (Appendix A). Some ServiceNow material also refers to an "Advanced" tier in entitlement tables — treat every figure as <strong>verify against your contract</strong></td>
+</tr>
+<tr>
+<td><strong>P1/P2 response targets</strong></td>
+<td>Documented as 30/120 minutes (Guided) and 15/60 minutes (Total). Verify</td>
+</tr>
+<tr>
+<td><strong>Scan custom definitions</strong></td>
+<td>Documented as <strong>up to 10</strong> (Guided) and <strong>unlimited</strong> (Total). Verify</td>
+</tr>
+<tr>
+<td><strong>Instance Observer entitlements</strong></td>
+<td>Seats, look-back window, alert counts and analytics access differ by package (documented as roughly 5 seats / 45-day look-back / 6 alerts for Guided versus 10 seats / 6-month look-back / 40 alerts for Total; analytics is Total-only). Verify</td>
+</tr>
+<tr>
+<td><strong>Accelerator concurrency</strong></td>
+<td>Guided: <strong>1 at a time</strong> across all sub-catalogs. Total: <strong>7 concurrent</strong> — 2 each for Architecture, Strategy and Technical, 1 for Optimization, and Optimization access applies only to the newest Total versions (v4, MSP Dedicated v4, MSP Domain Separated v2, USPS v5). Add-ons add concurrency. Verify</td>
+</tr>
+<tr>
+<td><strong>Developer Support seats</strong></td>
+<td>Documented as 5 (Guided) / 10 (Total). Verify</td>
+</tr>
+<tr>
+<td><strong>Proactive Code Check</strong></td>
+<td>Documented as <strong>deprecating from Impact Zurich 6.0.8</strong> — confirm status before building it into a multi-year roadmap</td>
+</tr>
+<tr>
+<td><strong>Group Views</strong></td>
+<td>Documented as <strong>initially available to limited customers</strong>; requires squad enablement; a group cannot span multiple accounts</td>
+</tr>
+<tr>
+<td><strong>On-demand Accelerators</strong></td>
+<td>Documented as having no concurrency limits but <strong>not available to Guided</strong>. Verify</td>
+</tr>
+<tr>
+<td><strong>Value Reports</strong></td>
+<td>Require <strong>at least two years of product data</strong> to be meaningful</td>
+</tr>
+<tr>
+<td><strong>Monthly Health Assessment reporting</strong></td>
+<td>Reports typically arrive <strong>around two weeks</strong> after the assessment. ServiceNow is <strong>not responsible</strong> for implementing or managing the assessment</td>
+</tr>
+<tr>
+<td><strong>Store Application exclusivity</strong></td>
+<td>From <strong>Yokohama onward</strong>, the Impact Store Application is the <strong>exclusive hub for all new innovative Impact features</strong>; the IDI does <strong>not</strong> receive new features. IDI retains catalogues, squad collaboration and features not yet migrated</td>
+</tr>
+<tr>
+<td><strong>Storage growth</strong></td>
+<td>Impact storage grows with usage; <strong>attachments are the biggest driver</strong>; the IDI connection adds further consumption</td>
+</tr>
+<tr>
+<td><strong>Domain separation</strong></td>
+<td><strong>Not supported</strong> for Impact</td>
+</tr>
+<tr>
+<td><strong>Restricted environments and MSPs</strong></td>
+<td>Portions of Impact may be unavailable in FedRAMP, NSC DOD IL5, <strong>Australia IRAP-Protected</strong> data centres, self-hosted environments and for managed service providers (except internal use)</td>
+</tr>
+<tr>
+<td><strong>Mobile app</strong></td>
+<td>Instance Observer is <strong>not</strong> available in the ServiceNow mobile app</td>
+</tr>
+<tr>
+<td><strong>ServiceNow responsibilities</strong></td>
+<td>Implementation and management of the Monthly Health Assessment is not ServiceNow's responsibility. Developer Support excludes net-new implementations and customisations that break after a family upgrade</td>
+</tr>
+<tr>
+<td><strong>Squad access</strong></td>
+<td>Read-only, <strong>30-day</strong>, revocable, <strong>quarterly</strong> re-approval</td>
+</tr>
+<tr>
+<td><strong>Findings locality</strong></td>
+<td>Scan Engine findings are <strong>not</strong> transmitted to the Impact Delivery Instance</td>
+</tr>
+</tbody>
+</table>
+<h3 id="10-3-statements-to-avoid-in-client-material">10.3 Statements to avoid in client material</h3>
+<ul>
+<li>❌ <em>"Impact replaces your support contract."</em> → It <strong>adds to</strong> Now Support; case handling continues there.</li>
+<li>❌ <em>"Impact will fix our technical debt."</em> → It <strong>finds, prioritises and routes</strong> it; remediation is still your delivery capacity (plus Accelerators and AI-assisted fixes).</li>
+<li>❌ <em>"We will see hard ROI in the first quarter."</em> → Value Reports need <strong>at least two years of product data</strong>.</li>
+<li>❌ <em>"Everything in the docs is in our package."</em> → Nearly every capability is entitlement-dependent. Say "subject to our package — we will confirm".</li>
+<li>❌ <em>"It works in IRAP-Protected."</em> → Portions of Impact are documented as unavailable in restricted environments including Australia IRAP-Protected.</li>
+</ul>
+<hr />
+<h2 id="11-appendices">11. Appendices</h2>
+<h3 id="appendix-a-package-and-entitlement-comparison-as-documented">Appendix A — Package and entitlement comparison (as documented)</h3>
+<p>ServiceNow documents three Impact packages plus Add-on SKUs. <strong>Every figure below is entitlement-dependent and must be verified against your contract before it is committed to in client material.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Capability / entitlement</th>
+<th>Guided</th>
+<th>Total</th>
+<th>Integrated Success</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Positioning</strong></td>
+<td>Entry-level: premium digital experience, enhanced technical support, Impact Squad Customer Success Manager</td>
+<td>Complete Impact solution: designated expert team, personalised recommendations, preventative tools</td>
+<td>Comprehensive: designated teams, personalised recommendations, preventative tools, <strong>expert services</strong> (Program Delivery, Design, Architecture) and <strong>technical implementation services</strong></td>
+</tr>
+<tr>
+<td><strong>Accelerator consumption</strong></td>
+<td><strong>1 at a time</strong> across all sub-catalogs</td>
+<td><strong>7 total</strong> — 2 concurrent per Architecture / Strategy / Technical sub-catalog, 1 for Optimization</td>
+<td>Effectively full accelerator access, including Platform Optimization accelerators</td>
+</tr>
+<tr>
+<td><strong>Add-ons referenced</strong></td>
+<td>Strategic Value · Platform Governance · Platform Optimization · Managed Support</td>
+<td>(same)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Add-on effects (examples)</strong></td>
+<td>+2 Strategy concurrency (Strategic Value) · +2 Architecture concurrency (Platform Governance) · +1 Optimization concurrency (Platform Optimization)</td>
+<td>(same)</td>
+<td>—</td>
+</tr>
+<tr>
+<td><strong>Platform Health — custom definitions</strong></td>
+<td>up to <strong>10</strong> active custom definitions</td>
+<td><strong>Unlimited</strong> active custom definitions · <strong>Proposed Fix</strong></td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Proactive Code Check</strong></td>
+<td>—</td>
+<td>Included (deprecating from Impact Zurich 6.0.8 — verify)</td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Instance Observer — seats / look-back / alerts</strong></td>
+<td>≈ <strong>5 seats · 45-day look-back · 6 alerts</strong></td>
+<td>≈ <strong>10 seats · 6-month look-back · 40 alerts</strong></td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Instance Observer — analytics</strong></td>
+<td>Not included (verify)</td>
+<td>Included</td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Developer Support</strong></td>
+<td>≈ <strong>5 seats</strong> (or via the Managed Support add-on)</td>
+<td>≈ <strong>10 seats</strong></td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>P1 / P2 response targets</strong></td>
+<td><strong>30 / 120 minutes</strong></td>
+<td><strong>15 / 60 minutes</strong></td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Value Reports</strong></td>
+<td>Limited (verify)</td>
+<td>Included</td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Impact Store Application, Platform Health, Instance Observer, Value Management, Product Adoption, Accelerator &amp; Initiative catalog access</strong></td>
+<td>Included (Impact Core)</td>
+<td>Included</td>
+<td>Included</td>
+</tr>
+<tr>
+<td><strong>Learning credits / Training Insights</strong></td>
+<td>Included (amount varies)</td>
+<td>Included</td>
+<td>Included</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>How to use this table:</strong> it is a <em>discussion aid</em>, not a contract. Present it as "here is what the documentation states, and here is what we will confirm for your entitlement". The most common client disappointment in Impact programs is discovering a capability they assumed was included. Confirm before you promise.</p>
+</blockquote>
+<h3 id="appendix-b-accelerator-sub-catalog-snapshot">Appendix B — Accelerator sub-catalog snapshot</h3>
+<p>Accelerators are organised into four sub-catalogs. The catalog content evolves; the examples below illustrate the shape of what is available rather than an exhaustive list.</p>
+<table>
+<thead>
+<tr>
+<th>Sub-catalog</th>
+<th>Typical focus</th>
+<th>Illustrative engagement types</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Architecture</strong></td>
+<td>Target-state design, data model, integration and platform architecture</td>
+<td>CMDB/CSDM design, multi-instance topology, integration strategy, platform governance</td>
+</tr>
+<tr>
+<td><strong>Strategy</strong></td>
+<td>Roadmapping, value definition, operating model and adoption planning</td>
+<td>Value roadmap, product adoption roadmap, operating model design, governance model</td>
+</tr>
+<tr>
+<td><strong>Technical</strong></td>
+<td>Hands-on configuration, performance, upgrade readiness and remediation</td>
+<td>Upgrade readiness, performance tuning, data management, platform health remediation</td>
+</tr>
+<tr>
+<td><strong>Optimization</strong></td>
+<td>Ongoing efficiency and continuous improvement</td>
+<td>Platform optimisation cycles (newer Total versions only — verify)</td>
+</tr>
+</tbody>
+</table>
+<p>Also documented in the Australia release: <strong>product-specific and release-specific Accelerators</strong>, <strong>on-demand</strong> Accelerators (documented as not available to Guided), <strong>Guided Remediation</strong>, <strong>Preventive Care</strong>, <strong>Jumpstart</strong> offerings, and the <strong>Accelerator and Initiative list</strong> maintained under <code>accelerator-and-initiative-list/</code>. Requests are raised from the Impact Store Application or the IDI and consume concurrency entitlements.</p>
+<h3 id="appendix-c-roles-installed-with-impact">Appendix C — Roles installed with Impact</h3>
+<p>Roles are assigned by persona. The API role name is what appears in user-assignment records and scripts.</p>
+<table>
+<thead>
+<tr>
+<th>Category</th>
+<th>Role</th>
+<th>API role name</th>
+<th>Key capabilities (summary)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Administrative</td>
+<td><strong>Impact Platform Owner</strong></td>
+<td><code>sn_impact_common.Impact Platform Owner</code></td>
+<td>Full access to all Impact features; premium access management for Instance Observer and Developer Support; Platform Owner dashboard; request Accelerators and advisory sessions. <strong>Cannot</strong> assign/configure roles (see Impact App Admin)</td>
+</tr>
+<tr>
+<td>Administrative</td>
+<td><strong>Impact Portfolio Owner</strong></td>
+<td><code>sn_impact_common.Impact Portfolio Owner</code></td>
+<td>Full CRUD on Impact tables; Platform Owner dashboard access</td>
+</tr>
+<tr>
+<td>Administrative</td>
+<td><strong>Impact Permissions Authorizer</strong></td>
+<td>Impact Permissions Authorizer</td>
+<td>Approves consent/permission requests (for example user-experience monitoring terms)</td>
+</tr>
+<tr>
+<td>Administrative</td>
+<td><strong>Impact Admin</strong></td>
+<td><code>sn_impact_common.Impact Admin (BDA)</code></td>
+<td>Impact administration</td>
+</tr>
+<tr>
+<td>Administrative + Scan Engine</td>
+<td><strong>Impact App Admin</strong></td>
+<td><code>sn_impact_common.Impact App Admin</code></td>
+<td>Application and user/role administration; executes Guided Setup</td>
+</tr>
+<tr>
+<td>Development + Scan Engine</td>
+<td><strong>Impact Developer</strong></td>
+<td><code>sn_impact_common.Impact Developer</code></td>
+<td>Consumes findings for remediation</td>
+</tr>
+<tr>
+<td>Development + Scan Engine</td>
+<td><strong>Development Team Lead</strong></td>
+<td><code>sn_impact_common.Impact Development Team Lead</code></td>
+<td>Team Lead dashboard; owns team findings</td>
+</tr>
+<tr>
+<td>Development + Support</td>
+<td><strong>Impact Developer Support</strong></td>
+<td>Impact Developer Support</td>
+<td>Named individuals permitted to raise Developer Support cases</td>
+</tr>
+<tr>
+<td>Scan Engine</td>
+<td><strong>Scan Engine Admin</strong></td>
+<td><code>sn_se.scan_engine_admin</code></td>
+<td>Instance registration, connection validation, scan configuration</td>
+</tr>
+<tr>
+<td>Scan Engine</td>
+<td><strong>Scan Engine User</strong></td>
+<td><code>sn_se.scan_engine_user</code></td>
+<td>Consumes scans/findings</td>
+</tr>
+<tr>
+<td>Scan Engine</td>
+<td><strong>AI Fix User</strong></td>
+<td><code>sn_impact_gen_ai_ai_fix_user</code></td>
+<td>Reviews AI-proposed code fixes (requires AI code fix enabled)</td>
+</tr>
+<tr>
+<td>Scan Engine</td>
+<td><strong>Internal REST Integration</strong></td>
+<td><code>sn_iu_internal_rest_integration</code></td>
+<td>Internal integration user for data movement</td>
+</tr>
+<tr>
+<td>Instance Observer</td>
+<td><strong>IO Standard</strong></td>
+<td><code>io_standard</code></td>
+<td>Instance Observer standard access</td>
+</tr>
+<tr>
+<td>Instance Observer</td>
+<td><strong>IO Read Only</strong></td>
+<td><code>io_readonly</code></td>
+<td>Instance Observer read-only access</td>
+</tr>
+<tr>
+<td>User-level</td>
+<td><strong>Impact Executive</strong></td>
+<td><code>sn_impact_common.Impact Executive</code></td>
+<td>Executive persona view of outcomes and value</td>
+</tr>
+<tr>
+<td>User-level</td>
+<td><strong>Impact User</strong></td>
+<td><code>sn_impact_common.Impact User</code></td>
+<td>Standard Impact workspace access</td>
+</tr>
+<tr>
+<td>User-level</td>
+<td><strong>Impact Partner</strong></td>
+<td><code>sn_impact_common.Impact Partner</code></td>
+<td>Partner access</td>
+</tr>
+<tr>
+<td>IDI (provider side)</td>
+<td><strong>Impact User · Impact Executive · Impact Platform Owner · Impact Admin · Impact Permissions Authorizer</strong></td>
+<td>IDI roles</td>
+<td>Administer and consume the Impact Delivery Instance</td>
+</tr>
+</tbody>
+</table>
+<h3 id="appendix-d-dependent-applications-and-data-movement-extract">Appendix D — Dependent applications and data movement (extract)</h3>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Installed with</th>
+<th>Moves data off your instance?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Impact Common</strong></td>
+<td>Impact Store Application</td>
+<td><strong>No</strong> — foundational code and data model</td>
+</tr>
+<tr>
+<td><strong>Impact Content</strong></td>
+<td>Impact Store Application</td>
+<td><strong>No</strong> — content/templates</td>
+</tr>
+<tr>
+<td><strong>Impact Health</strong></td>
+<td>Impact Store Application</td>
+<td><strong>No</strong> (scan findings stay local)</td>
+</tr>
+<tr>
+<td><strong>Impact Value Management — <code>&lt;product&gt;</code></strong></td>
+<td>Conditionally, per product</td>
+<td>Populates value metrics; jobs must be enabled</td>
+</tr>
+<tr>
+<td><strong>Service Bridge stack</strong></td>
+<td>Platform capability + dependent apps</td>
+<td><strong>Yes</strong> — bi-directional sync with the IDI</td>
+</tr>
+<tr>
+<td><strong>Cloud Storage</strong></td>
+<td>Dependent app</td>
+<td><strong>Yes</strong> — attachment/blob storage</td>
+</tr>
+<tr>
+<td><strong>Licensing Engine</strong></td>
+<td>Dependent app</td>
+<td><strong>Yes</strong> — entitlement/subscription data for Capability Maps and Subscriptions</td>
+</tr>
+<tr>
+<td><strong>MIF Customer Instance</strong></td>
+<td>Dependent app</td>
+<td><strong>Yes</strong> — multi-instance/interface data</td>
+</tr>
+<tr>
+<td><strong>Instance Observer</strong></td>
+<td>Off-instance cloud app</td>
+<td>Telemetry is collected off-instance (entitlement-tiered)</td>
+</tr>
+<tr>
+<td><strong>Now Assist / ServiceNow Otto skills</strong></td>
+<td>Now Assist entitlement + activation</td>
+<td>Governed by Now Assist terms</td>
+</tr>
+</tbody>
+</table>
+<p>Use this table directly in the security review: it answers "what leaves the instance?" with three named components plus the observability and AI services.</p>
+<h3 id="appendix-e-source-topics-australia-release-documentation">Appendix E — Source topics (Australia release documentation)</h3>
+<p>All statements in this briefing are drawn from the ServiceNow Australia-release Impact documentation set (<code>markdown/impact/</code>, 266 topics) plus the Impact packages/entitlement documentation. The principal sources are listed below by area.</p>
+<p><strong>Concepts and overview:</strong> <code>servicenow-impact-concept.md</code> · <code>getting_started_with_impact_concept.md</code> · <code>impact-features.md</code> · <code>impact-program-features.md</code> · <code>impact-in-app.md</code> · <code>impact-in-platform-home.md</code> · <code>impact-landing-page.md</code> · <code>impact-reference.md</code> · <code>additional-resources-impact.md</code> · <code>index.md</code></p>
+<p><strong>Packages, subscriptions and entitlements:</strong> <code>impact-packages.md</code> · <code>impact-packages1.md</code> · <code>subscriptions.md</code> · <code>impact-tech-kpis.md</code> · <code>consumption-report.md</code> · <code>ide-consumption-report.md</code> · <code>gen-ai-based-consumption-report-summarization.md</code></p>
+<p><strong>Architecture and configuration:</strong> <code>configuring-impact-platform.md</code> · <code>configuring-impact-idi.md</code> · <code>impact-delivery-instance-reference.md</code> · <code>service-bridge-overview.md</code> · <code>data-sync-idi-store.md</code> · <code>table-field-level-mapping.md</code> · <code>deployment-sync-integrations.md</code> · <code>definitions-integrations.md</code> · <code>impact-store-app-storage-estimation.md</code></p>
+<p><strong>Installation, Guided Setup and registration:</strong> <code>install-impact-innovation-lab.md</code> · <code>guided-setup-impact-in-app.md</code> · <code>connect-instance-impact-store-app.md</code> · <code>onboard_users_impact_store_application.md</code> · <code>assign-users-scan-engine-groups.md</code> · <code>register-your-instance.md</code> · <code>start-automated-registration-IDI.md</code> · <code>use_manual_registration_configure_impact_store_application.md</code> · <code>initiate-the-connection-impact-delivery-instance.md</code> · <code>validate-instance-connection.md</code> · <code>verify-impact-data-connection.md</code> · <code>recover-from-account-lockout.md</code> · <code>initiate-migration-idi.md</code> · <code>task-create-integration-user.md</code> · <code>configure-oauth-auth-method.md</code> · <code>configure-oauth-auth-method-prod.md</code> · <code>configure-basic-auth-method.md</code> · <code>hop-access-impact-squad.md</code> · <code>grant-ide-permissions.md</code> · <code>ide-user-management.md</code> · <code>install-proactive-code-check.md</code> · <code>install-impact-innovation-lab.md</code></p>
+<p><strong>Platform Health and Scan Engine:</strong> <code>healthscan.md</code> · <code>healthscan-definitions.md</code> (+ <code>-aug-store</code>, <code>-may-store</code>, <code>-nov-store</code>, <code>-oct-hotfix</code> variants) · <code>using-impact-scan-engine.md</code> · <code>run-scan-engine.md</code> · <code>initiate-manage-scan-engine.md</code> · <code>initiate-instance-scans.md</code> · <code>initiate-limited-def-scans.md</code> · <code>initiate-update-set-scans.md</code> · <code>initiating-on-demand-scans-scan-engine.md</code> · <code>instance-integration-scan-engine.md</code> · <code>configure-initial-scan-engine-settings.md</code> · <code>configure-scan-engine-properties.md</code> · <code>configure-real-time-scanning-properties.md</code> · <code>configure-application-scanning-properties.md</code> · <code>configure-exception-reasons-scan-engine.md</code> · <code>submitting-exception-reasons-scan-engine.md</code> · <code>syncing-exception-reasons.md</code> · <code>exception-reason-properties.md</code> · <code>exception-reason-integration.md</code> · <code>additional-scan-engine-properties.md</code> · <code>view-modify-scan-engine-properties.md</code> · <code>viewing-scan-results-scan-engine.md</code> · <code>understand-scan-engine-results-findings.md</code> · <code>understanding-scan-blocking-override-behavior.md</code> · <code>create-scan-engine-definitions.md</code> · <code>create-scan-engine-definition-suites.md</code> · <code>sync-new-customized-overridden-defs.md</code> · <code>add-view-scan-engine-related-lists.md</code> · <code>working-policies-scan-engine.md</code> · <code>scan-engine-parallel-processing.md</code> · <code>teamdev-scanning-properties.md</code> · <code>update-set-scanning-properties2.md</code> · <code>scan-engine-diagnostic-dashboards.md</code> · <code>scan-engine-executive-dashboard.md</code> · <code>scan-engine-platform-owner-dashboard.md</code> · <code>scan-engine-team-lead-dashboard.md</code> · <code>scan-engine-development-team-dashboard.md</code> · <code>creating-user-stories-tasks-scan-engine.md</code> · <code>user-story-integration-properties.md</code> · <code>update-set-integration.md</code> · <code>configuring-sn-integration-options.md</code> · <code>configure-jira-integration-options.md</code> · <code>configure-azure-devops-integration-options.md</code> · <code>configure-other-integration-options.md</code> · <code>aes-aemc-integration-properties.md</code> · <code>custom-payload-help-guide-impact.md</code> · <code>real-time-prevention-monitoring.md</code> · <code>proactive-code-check.md</code> · <code>proactive-code-check-scan-suite.md</code> · <code>review-address-proactive-code-check-findings.md</code> · <code>configure-ai-code-fix-for-platform-health.md</code> · <code>batch-remediation-with-ai.md</code> · <code>prevent-resolve-technical-debt-ai.md</code> · <code>activate-now-assist-skills-in-now-assist-for-impact.md</code> · <code>platform-health-idi.md</code> · <code>health-assessment-dashboard.md</code> · <code>manage-health-assessment-dashboard.md</code> · <code>schedule-monthly-health-assessment-scans.md</code> · <code>monthly-health-assessment.md</code></p>
+<p><strong>Instance Observer:</strong> <code>io-overview.md</code> · <code>io-feature-availability.md</code> · <code>io-help.md</code> · <code>i-o-reports.md</code> · <code>i-o-notifications.md</code> · <code>io-analytics.md</code> · <code>io-alerts.md</code> · <code>io-alerts-intro.md</code> · <code>io-alerts-guided-cust.md</code> · <code>io-alerts-popular-total-adv-cust.md</code> · <code>manage-io-alerts.md</code> · <code>configuring-io-alerts.md</code> · <code>generate-thresholds-io-alerts.md</code> · <code>configure-anomaly-alerts.md</code> · <code>configure-rcc-alerts.md</code> · <code>anomalies-detection.md</code> · <code>anomaly-detection-algorithm.md</code> · <code>root-cause-correlation.md</code> · <code>utilizing-rcc-reports-perform-root-cause-analysis.md</code> · <code>io-triage.md</code> · <code>io-triage-sn-instance.md</code> · <code>io-availability.md</code> · <code>cloud-availability.md</code> · <code>io-performance-insights.md</code> · <code>io-beginning-perf-charts.md</code> · <code>io-core-performance-metrics.md</code> · <code>io-database-performance-metrics.md</code> · <code>io-ecc-queue-perf-metrics.md</code> · <code>io-emails-performance-metrics.md</code> · <code>io-events-performance-metrics.md</code> · <code>io-host-health-perf-metrics.md</code> · <code>io-job-details-perf-metrics.md</code> · <code>io-load-balancer.md</code> · <code>io-long-pending-jobs.md</code> · <code>io-long-pending-job-alert-card.md</code> · <code>io-node-health-perf-metrics.md</code> · <code>io-pool-replica-lag.md</code> · <code>io-query-patterns-vid-tut.md</code> · <code>io-schedulers-perf-metrics.md</code> · <code>io-semaphores-performance-metrics.md</code> · <code>io-standby-replica-lag.md</code> · <code>io-user-info-metrics.md</code> · <code>io-cluster-details.md</code> · <code>io-chat-details.md</code> · <code>io-app-mon-perf-analy.md</code> · <code>io-app-monitor-alert-card.md</code> · <code>io-compare-datasets-vid-tut.md</code> · <code>io-getting-started-perf-charts.md</code> · <code>io-self-serve-alerts-vid-tut.md</code> · <code>io-receive-notification-customer-conf-webhook.md</code> · <code>io-receive-notification-third-party.md</code> · <code>customize-instance-observer-dashboard.md</code> · <code>user-configurable-dashboard.md</code> · <code>manage-user-experience.md</code> · <code>monitor-apps-user-experience-io.md</code> · <code>user-experience-insights.md</code> · <code>instance-observer-metrics.md</code> · <code>instance-observer-ovr-metric.md</code> · <code>instance-observer-performance.md</code> · <code>instance-observer-reporting.md</code> · <code>impact-observer-roles.md</code> · <code>addl-inf-io-anomaly.md</code></p>
+<p><strong>Value management and value library:</strong> <code>objectives-and-outcomes-in-impact-delivery-instance.md</code> · <code>manage-objectives-and-outcomes_0.md</code> · <code>value-reports-in-impact-delivery-instance.md</code> · <code>value-management-mapping.md</code> · <code>value-library/</code> (objectives and outcomes, outcome insights, product value, value reports, contextual learning, Metric/Benchmark/Goal/Trend) · <code>consumption-report.md</code> · <code>manage-capabilities.md</code></p>
+<p><strong>Product adoption:</strong> <code>impact-product-adoption-roadmap/</code> · <code>create-and-publish-a-product-adoption-roadmap.md</code> · <code>product-adoption-roadmap-capabilities-map-mapping.md</code> · <code>recommendations-mapping.md</code> · <code>recommendation-details-page-in-impact-store.md</code> · <code>using-recommendations-iip-ws.md</code> · <code>creating-work-items-using-recommendations-and-initiatives.md</code> · <code>convert-spm-entity-impact-entity-recommendations.md</code> · <code>create-spm-work-item-impact-entity.md</code></p>
+<p><strong>Accelerators and initiatives:</strong> <code>accelerator-and-initiative-list/</code> · <code>accelerators-mapping.md</code> · <code>request-accelerator.md</code></p>
+<p><strong>Experts, squad and operating model:</strong> <code>impact-squad.md</code> · <code>impact-operating-model.md</code> · <code>working-with-squad-mapping.md</code> · <code>working-with-conversations.md</code> · <code>impact-activity-center/</code> (incl. <code>impact-conversations_store.md</code>, <code>start-conversation-store.md</code>) · <code>developer-support.md</code> · <code>developer-support-usage.md</code> · <code>manage-developer-support-user-access.md</code> · <code>create-developer-support-case.md</code> · <code>training-insights.md</code></p>
+<p><strong>Governance, roles, storage and restrictions:</strong> <code>impact-roles.md</code> · <code>idi-roles.md</code> · <code>impact-domain-separation.md</code> · <code>group-views.md</code> · <code>impact-store-app-storage-estimation.md</code> · <code>access-analytics-dashboards.md</code> · <code>auriga-intelligent-report.md</code></p>
+<p><strong>Data collection packs (per product):</strong> <code>data-collection-toolkit.md</code> · <code>data-collection-itsm.md</code> · <code>data-collection-itom.md</code> · <code>data-collection-csm.md</code> · <code>data-collection-hr.md</code> · <code>data-collection-irm.md</code> · <code>data-collection-sam.md</code> · <code>data-collection-ham.md</code> · <code>data-collection-apm.md</code> · <code>data-collection-app-engine.md</code> · <code>data-collection-secops.md</code> · <code>data-collection-spm.md</code> · and the corresponding <code>dc-*-install.md</code> / <code>dc-*-activate.md</code> / <code>dc-*-config.md</code> / <code>dc-*-install-artifacts.md</code> topics, plus <code>dc-all-modify.md</code> · <code>dc-all-upgrade.md</code> · <code>dc-install-plugins.md</code></p>
+<p><strong>Release notes (Australia and preceding releases):</strong> <code>markdown/delta-*-australia/</code> (including the Impact release notes and the Australia "new features" material referenced for the ServiceNow Otto rebrand, webhook-failure alert notifications, the Instance Observer long-pending-jobs alert card, and the removal of the on-demand value report and Value potential accelerators in Australia, and the Jumpstart Your Document Intelligence removal noted for Zurich).</p>
+<hr />
+<p><em>End of document. Prepared as a client-ready briefing. All ServiceNow product behaviour described here is drawn from the Australia-release documentation listed in Appendix E; commercial terms, precise SKUs and entitlements must be confirmed with your ServiceNow account team and the applicable legal schedules.</em></p>
+  </div>
+</main>
+</div>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('nav.toc a'));
+  var targets = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  function onScroll() {
+    var y = window.scrollY + 130, best = 0;
+    targets.forEach(function (t, i) { if (t && t.offsetTop <= y) best = i; });
+    links.forEach(function (a, i) { a.classList.toggle('active', i === best); });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>
