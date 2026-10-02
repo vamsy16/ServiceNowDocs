@@ -14,6 +14,8 @@ ROOT = HERE.parent
 sys.path.insert(0, str(HERE))
 from audit_pdf_food import _slug
 from leads_attractive_block import ATTRACTIVE
+from evidence_data import E as EVIDENCE, CRAWL_DATE
+from build_evidence_audits import derive, _row
 
 NAVY = "0F172A"; LIGHT = "F1F5F9"; RED_BG = "FFF1F2"; GREEN_BG = "ECFDF5"; PURPLE = "F5F3FF"
 WHITE_BOLD = Font(bold=True, color="FFFFFF", size=10)
@@ -53,21 +55,21 @@ def main():
         ["", ""],
         ["Date of live verification", "02 OCT 2026"],
         ["Leads", f"{len(leads)} brands (no duplicates with the agency's existing 100 leads or the Solar pipeline)"],
-        ["Audit PDFs", f"audits/<brand>-audit-report.pdf — attractive 2-page format (you vs competitor, 3 leaks, roadmap, ROI, audit basis, CTA)"],
+        ["Audit PDFs", f"audits/<brand>-paid-media-measurement-audit.pdf — 7-page Paid Media &amp; Measurement Audit: cover metrics, contents+method, live ad account, severity-ranked findings with the raw measurement quoted, evidence register, opportunity score /20, qualification, effort-ordered next steps"],
         ["Emails", f"{sum(len(l['outreach']) for l in leads)} emails — 4 per brand — see the 'Emails' sheet"],
         ["Skills used per audit", "performance-lead-audit orchestrating: ads, ad-creative, copywriting, cro, analytics/attribution, competitor-profiling, cold-email, pdf-report-generator"],
         ["", ""],
         ["HOW THE DATA WAS VERIFIED", ""],
         ["Ad counts", "Google Ads Transparency (region IN), re-checked at generation time on 02 OCT 2026"],
-        ["Meta ads", "Meta Ad Library — verified for Licious (Library ID 983369480870934, live since 15 Apr 2026); others noted where not verified"],
+        ["Meta ads", "Meta Ad Library — verified live for Akshayakalpa (4 to 5 creatives, running since 19 May 2026, library IDs recorded) and Licious (Library ID 983369480870934, ≈550 live); other brands returned no inventory and are reported as not measured, never as zero"],
         ["Emails", "Crawled from each brand's own website / help centre / corporate pages — no guessed, generic or formation addresses"],
-        ["Site/tech facts", "Live raw HTML + rendered pages captured 02 OCT 2026 (tokens, GTM/GA4 IDs, defects quoted verbatim)"],
+        ["Site/tech facts", "Live HTTP headers + HTML captured 02 OCT 2026 (GTM/GA4/Ads/pixel IDs, platform, redirects, defects quoted verbatim)"],
         ["Financials/market data", "Public coverage, labelled as reported — third-party estimates marked as estimates"],
         ["", ""],
         ["INTEGRITY RULES", ""],
         ["1", "Every number in a PDF's 'Before (live)' column traces to a source listed on that PDF"],
         ["2", "Benchmarks are labelled as industry benchmarks — no client results are invented"],
-        ["3", "Where something was NOT verified, the audit says so explicitly (e.g. Third Wave: Google verified at 0, Meta not checked)"],
+        ["3", "Where something was NOT verified it is reported as unavailable or not measured — never as zero, and never estimated. A tag is only called absent when a second method confirmed it; otherwise it reads unconfirmed"],
         ["4", "No lead, email or ad count is duplicated across sheets or with existing pipelines"],
     ]
     for r in rows: ws.append(r)
@@ -82,14 +84,14 @@ def main():
     ws = wb.create_sheet("Leads")
     ws.append(["#","Brand","Website","Instagram","Niche","Lead score /10","Live Google ads",
                "Lead email (crawled)","Phone","Legal entity","Address / HQ","Contact source",
-               "Audit PDF","Outreach file","Verified on"])
+               "Audit PDF (7-page evidence format)","Outreach file","Verified on"])
     for i, l in enumerate(leads, 1):
         s = _slug(l["brand"])
         ws.append([i, l["brand"], l["website"], l.get("instagram",""), l["niche"], l["score"],
                    l["ads_active"], l["contact"]["email"], l["contact"].get("phone",""),
                    l["contact"].get("entity",""), l["contact"].get("address",""),
                    l.get("contact_source", "Own website / help centre / corporate pages"),
-                   f"audits/{s}-audit-report.pdf", f"outreach/{s}-outreach-templates.md", l["verified_on"]])
+                   f"audits/{s}-paid-media-measurement-audit.pdf", f"outreach/{s}-outreach-templates.md", l["verified_on"]])
     style_header(ws); autosize(ws, [4,22,26,22,30,10,12,34,18,34,52,34,38,40,12])
     for row in ws.iter_rows(min_row=2):
         for c in row: c.alignment = WRAP; c.border = THIN
@@ -159,19 +161,91 @@ def main():
     ws = wb.create_sheet("Skills Used")
     ws.append(["Audit section","Repository skill(s)","What was done with it"])
     for r in [
-        ["Ad Intelligence","ads","Google Ads Transparency + Meta Ad Library: live counts, advertiser entities, destinations, durations"],
+        ["Ad Intelligence","ads","Google Ads Transparency (region IN) + Meta Ad Library (country IN): live counts and, where open, individual creatives with running-since dates"],
         ["Creative audit","ad-creative","Creative formats, fatigue signals, refresh-rate analysis per brand"],
         ["Copy & angle audit","copywriting","Hook/angle analysis from live ad copy captured in the Ad Library and Transparency"],
         ["Landing / destination audit","cro","Destination-path step count, locator vs product page, trust-proof placement"],
         ["Tracking audit","analytics, attribution","GTM/GA4 tags detected in live HTML (e.g. GTM-K6SZV8J, G-EN77D2S0YH); CAPI/Enhanced-Conversions guidance"],
         ["Competitor benchmark","competitor-profiling, competitors, competitor-x-ray, funnel-spy","Category benchmark rows in every PDF ('You vs Competitor')"],
         ["Outreach","cold-email, outreach-personalizer","4-email sequences per brand (Day 1/3/7/14), plain text ready"],
-        ["PDF output","pdf-report-generator","Attractive 2-page Smart Pursuit format with audit-basis box + CTA"],
+        ["PDF output","pdf-report-generator","7-page Paid Media &amp; Measurement Audit: metric cards, method, live ad account, coverage table, severity findings with quoted evidence, evidence register, opportunity score, qualification, next steps"],
     ]:
         ws.append(r)
     style_header(ws); autosize(ws, [26,44,95])
     for row in ws.iter_rows(min_row=2):
         for c in row: c.alignment = WRAP; c.border = THIN
+
+
+    # ------------------------------------------------- 9. FINDINGS (severity + evidence)
+    ws = wb.create_sheet("Findings (severity+evidence)")
+    ws.append(["Brand","#","Severity","Finding","Evidence (raw measurement)","Why it matters (analysis)"])
+    sev_count = {}
+    for l in leads:
+        slug = _slug(l["brand"])
+        lead = EVIDENCE.get(slug)
+        if not lead:
+            continue
+        order = {"CRITICAL":0,"HIGH":1,"MEDIUM":2,"LOW":3,"NOTE":4}
+        for i, f in enumerate(sorted(lead["findings"], key=lambda x: order.get(x["sev"],9)), 1):
+            sev_count[f["sev"]] = sev_count.get(f["sev"], 0) + 1
+            ws.append([l["brand"], i, f["sev"], f["title"], f["evidence"], f["reading"]])
+    style_header(ws); autosize(ws, [20,4,11,52,66,80])
+    for row in ws.iter_rows(min_row=2):
+        for c in row: c.alignment = WRAP; c.border = THIN
+        s = row[2].value
+        fill = {"CRITICAL":"FEE2E2","HIGH":"FFEDD5","MEDIUM":"FEF3C7","LOW":"E0E7FF"}.get(s)
+        if fill: row[2].fill = PatternFill("solid", fgColor=fill)
+    ws.auto_filter.ref = ws.dimensions
+
+    # ------------------------------------------------- 10. OPPORTUNITY SCORE
+    ws = wb.create_sheet("Opportunity Score")
+    ws.append(["Brand","Dimension","Score /4","What the score is based on","Overall /20","Grade","Grade note"])
+    for l in leads:
+        slug = _slug(l["brand"])
+        lead = EVIDENCE.get(slug)
+        if not lead:
+            continue
+        total = sum(v for _, _, v in lead["score_dims"])
+        for name, note, val in lead["score_dims"]:
+            ws.append([l["brand"], name, val, note, total, lead["grade"], lead["grade_note"]])
+    style_header(ws); autosize(ws, [20,26,10,62,12,8,52])
+    for row in ws.iter_rows(min_row=2):
+        for c in row: c.alignment = WRAP; c.border = THIN
+
+    # ------------------------------------------------- 11. COVERAGE (what was measured)
+    ws = wb.create_sheet("Coverage (measured vs not)")
+    ws.append(["Brand","Surface","Status","Method / reason","Crawl date"])
+    for l in leads:
+        slug = _slug(l["brand"])
+        lead = EVIDENCE.get(slug)
+        if not lead:
+            continue
+        d = derive(dict(lead))
+        for surf, status, meth in d["coverage"]:
+            ws.append([l["brand"], surf, status, meth, CRAWL_DATE])
+    style_header(ws); autosize(ws, [20,30,30,62,14])
+    for row in ws.iter_rows(min_row=2):
+        for c in row: c.alignment = WRAP; c.border = THIN
+        if row[2].value == "UNAVAILABLE":
+            row[2].fill = PatternFill("solid", fgColor="FEF3C7")
+        elif row[2].value == "NOT MEASURED":
+            row[2].fill = PatternFill("solid", fgColor=LIGHT)
+
+    # ------------------------------------------------- 12. EVIDENCE REGISTER
+    ws = wb.create_sheet("Evidence Register")
+    ws.append(["Brand","Measurement","Source","Value observed","Date"])
+    for l in leads:
+        slug = _slug(l["brand"])
+        lead = EVIDENCE.get(slug)
+        if not lead:
+            continue
+        d = derive(dict(lead))
+        for item, src, val, dt in d["register"]:
+            ws.append([l["brand"], item, src, val, dt])
+    style_header(ws); autosize(ws, [20,28,42,80,14])
+    for row in ws.iter_rows(min_row=2):
+        for c in row: c.alignment = WRAP; c.border = THIN
+    ws.auto_filter.ref = ws.dimensions
 
     out = ROOT / "Food-Bangalore-ALL-IN-ONE.xlsx"
     wb.save(out)

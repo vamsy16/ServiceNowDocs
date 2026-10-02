@@ -3,14 +3,14 @@
 > Lives inside the **arena-performance-marketing** repo as the Food/Bengaluru niche (moved out of ServiceNowDocs on 02 Oct 2026).
 > Format: house **ATTRACTIVE** audit PDF (same family as the GMB/SMM/CRO template PDFs).
 
-**11 leads · 11 attractive 2-page audit PDFs · 44 follow-up emails · 1 master Excel · every fact verified live on 02 OCT 2026.**
+**11 leads · 11 audit PDFs · 44 follow-up emails · 1 master Excel · every fact verified live on 02 OCT 2026.**
 
 ## Start here
 
 | Path | What it is |
 |---|---|
 | **`Food-Bangalore-ALL-IN-ONE.xlsx`** | **Everything in one workbook** — 8 sheets: README, Leads, Emails (all 44), Leaks & Roadmap, You vs Competitor, Expected ROI, Audit Basis (sources), Skills Used |
-| `audits/*.pdf` | Attractive 2-page audit per lead: metrics row → YOU vs COMPETITOR → 3 LEAKS → 3 QUICK WINS roadmap → EXPECTED ROI → AUDIT BASIS → guarantee → dark CTA |
+| `audits/*.pdf` | Audit per lead (7-page "Paid Media & Measurement Audit" evidence format; the earlier attractive layout is archived in `audits/_previous-attractive-format/`, the original text layout in `audits/_previous-text-format/`) |
 | `ALL-EMAIL-SEQUENCES.md` | All 44 emails in one file (4 per brand: Day 1 / 3 / 7 / 14) |
 | `outreach/*-outreach-templates.md` | Per-brand email file |
 | `leads/*.json` | Structured lead data incl. `contact_source` (where each email was crawled from) |
