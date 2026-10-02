@@ -21,10 +21,16 @@ All 11 audits have been rebuilt in the format of
 6. `04` opportunity score — 5 dimensions × 4 dots, overall /20, grade, and the amber qualification box
 7. `05` next steps ordered by effort against impact, with the "happy to walk through this on a short call" CTA
 
-Plus: `Food-Bangalore-ALL-IN-ONE.xlsx` now has **12 sheets** — the original 8 plus
+Plus: **`VERIFY-THE-DATA.md`** — a 49-row guide mapping every claim in every audit to the
+exact public URL where you or the lead can check it (Google Ads Transparency per domain,
+Meta Ad Library links including individual creative IDs, the site URL to view-source for
+each tag ID, header-check links), plus a list of what no one outside the company can verify
+(spend, ROAS, CPA).
+
+`Food-Bangalore-ALL-IN-ONE.xlsx` now has **14 sheets** — the original 8 plus
 `Findings (severity+evidence)`, `Opportunity Score`, `Coverage (measured vs not)`,
-`Evidence Register`. Outreach emails and the README were updated to reference the
-7-page audit. Each audit is per-lead (Licious, Akshayakalpa Organic, Anand Sweets,
+`Evidence Register`, `Verify These (links)`, `Cannot be verified`. Outreach emails and the
+README were updated to reference the 7-page audit. Each audit is per-lead (Licious, Akshayakalpa Organic, Anand Sweets,
 Chai Point, The Baker's Dozen, Cothas Coffee, Early Foods, iD Fresh Food, Third Wave
 Coffee, Frozen Bottle, Milky Mist).
 
