@@ -33,7 +33,7 @@ Hi team,
 
 I audit paid media for food brands from Bengaluru. Your footprint is the biggest I found in this category: **~400 live Google creatives** under Akshayakalpa Farms and Foods Pvt Ltd. The product story behind it is world-class - 4C farm chilling, 24-36 hours to doorstep vs the 72-96 hour industry norm, APEDA certified.
 
-One thing you can check in 30 seconds: the footer of akshayakalpa.org currently contains template placeholder text - '0123.456.789 - 2 Queen Street, California, USA'. Your paid traffic lands on that page. It is a small fix and a direct trust cost while it is live.
+One thing you can check in 30 seconds: the Contact Us page at akshayakalpa.org/contact-us currently contains template placeholder text - '0123.456.789 - 2 Queen Street, California, USA'. Your paid traffic lands on that page. It is a small fix and a direct trust cost while it is live.
 
 Attached is the 7-page Paid Media and Measurement Audit, including what I would do with ~400 creatives to make them learn faster than they spend. Worth 15 minutes?
 

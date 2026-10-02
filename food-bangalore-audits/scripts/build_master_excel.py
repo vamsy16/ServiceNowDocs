@@ -16,6 +16,7 @@ from audit_pdf_food import _slug
 from leads_attractive_block import ATTRACTIVE
 from evidence_data import E as EVIDENCE, CRAWL_DATE
 from build_evidence_audits import derive, _row
+from build_verify_guide import ROWS as VERIFY_ROWS, NOT_VERIFIABLE
 
 NAVY = "0F172A"; LIGHT = "F1F5F9"; RED_BG = "FFF1F2"; GREEN_BG = "ECFDF5"; PURPLE = "F5F3FF"
 WHITE_BOLD = Font(bold=True, color="FFFFFF", size=10)
@@ -246,6 +247,36 @@ def main():
     for row in ws.iter_rows(min_row=2):
         for c in row: c.alignment = WRAP; c.border = THIN
     ws.auto_filter.ref = ws.dimensions
+
+
+    # ------------------------------------------------- 13. VERIFY THESE (links)
+    ws = wb.create_sheet("Verify These (links)")
+    ws.append(["Brand","Claim in the audit","Where to check it","Link","What you should see"])
+    for l in leads:
+        slug = _slug(l["brand"])
+        for claim, where, link, expect in VERIFY_ROWS.get(slug, []):
+            ws.append([l["brand"], claim, where, link, expect])
+    style_header(ws); autosize(ws, [20,46,40,60,72])
+    for row in ws.iter_rows(min_row=2):
+        for c in row: c.alignment = WRAP; c.border = THIN
+        cell = row[3]
+        if isinstance(cell.value, str) and cell.value.startswith("http"):
+            cell.hyperlink = cell.value
+            cell.font = Font(color="1155CC", underline="single", size=10)
+    ws.auto_filter.ref = ws.dimensions
+
+    # ------------------------------------------------- 14. WHAT CANNOT BE VERIFIED
+    ws = wb.create_sheet("Cannot be verified")
+    ws.append(["Item","Why no public source exists"])
+    for a, b in NOT_VERIFIABLE:
+        ws.append([a, b])
+    ws.append(["", ""])
+    ws.append(["Rule applied in every audit",
+               "Where a value could not be measured it is reported as unavailable or not measured. "
+               "Nothing has been inferred to fill a gap, and no tag is described as absent unless a second method confirmed it."])
+    style_header(ws); autosize(ws, [34,110])
+    for row in ws.iter_rows(min_row=2):
+        for c in row: c.alignment = WRAP; c.border = THIN
 
     out = ROOT / "Food-Bangalore-ALL-IN-ONE.xlsx"
     wb.save(out)

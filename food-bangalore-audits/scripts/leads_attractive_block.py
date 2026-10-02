@@ -190,7 +190,7 @@ ATTRACTIVE = {
                 "Other organic dairy brands: premium positioning at smaller scale"],
  "leaks": [
    ("~400 creatives without a ranking system", "At this volume spend thins across assets and audiences. If the top 10 performers cannot be named, the other ~390 are paying for lessons already learned."),
-   ("The site undermines a farm-to-door premium brand", "Live footer template text - '0123.456.789 - 2 Queen Street, California, USA' - sits on the pages paid traffic lands on. Small fix, direct trust cost while live."),
+   ("The site undermines a farm-to-door premium brand", "Live Contact Us template text - '0123.456.789 - 2 Queen Street, California, USA' - sits on a page paid traffic can land on. Small fix, direct trust cost while live."),
    ("No B2B or gifting path published", "Cafés, cloud kitchens, hotels, corporate pantry and gifting buyers have nowhere to go: only a support address is published, so that demand never enters the funnel.")],
  "roadmap": [
    ("DAY 1-4", "Clean the funnel before feeding it more spend", "Remove placeholder artifacts, publish a real Bengaluru contact block, and rebuild the three highest-spend landing pages around the 24-36 hour freshness proof with subscription as the primary CTA."),
@@ -198,7 +198,7 @@ ATTRACTIVE = {
    ("DAY 11-14", "Open the B2B and gifting lines", "Enquiry paths for HoReCa / corporate pantry / gifting with a form, case study and price-on-request flow - plus a small always-on campaign against them.")],
  "roi": [
    ("Creative inventory", "~400 creatives, ranking unknown", "Top 10 known, bottom third cut", "Same spend, better unit economics (media practice)"),
-   ("Landing trust", "Placeholder footer live", "Clean, proof-led pages", "Higher conversion, protected premium (CRO benchmark)"),
+   ("Landing trust", "Placeholder contact block live", "Clean, proof-led pages", "Higher conversion, protected premium (CRO benchmark)"),
    ("B2B / gifting", "No enquiry path published", "Form + case study + always-on campaign", "New revenue line at low incremental spend (B2B benchmark)")],
 },
 "milky-mist": {
